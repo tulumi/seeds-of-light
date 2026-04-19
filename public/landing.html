@@ -3,172 +3,736 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Seeds of Light — Cartas de Confianza y Calma para Niños</title>
+<title>Seeds of Light — Affirmation Cards for Kids</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet"/>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root { --cream:#FAF6F0;--cream-deep:#F2EBE0;--sage:#A8BFA8;--sage-light:#C8DBC8;--blush:#E8C4B8;--blush-deep:#D4A090;--lavender:#C4B8D8;--sky:#B8D4E8;--gold:#D4A85C;--gold-light:#E8C87C;--dark:#3C3228;--mid:#7A6A58;--soft:#A89880;--white:#FFFFFF;--font-serif:'Cormorant Garamond',serif;--font-sans:'Jost',sans-serif;--font-script:'Dancing Script',cursive; }
-html { scroll-behavior: smooth; }
-body { background: var(--cream); color: var(--dark); font-family: var(--font-sans); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
-h1,h2,h3,h4 { font-family: var(--font-serif); font-weight:400; line-height:1.2; }
-.label { font-family: var(--font-sans); font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; color: var(--soft); }
-.star::before { content:'✦'; }
-.star-sm { font-size:.55rem; color:var(--gold); }
-nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.2rem 3rem; background: rgba(250,246,240,.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(168,152,128,.15); }
-.nav-logo { font-family: var(--font-script); font-size: 1.5rem; color: var(--dark); text-decoration: none; }
+:root {
+  --cream:#FAF6F0; --cream-deep:#F2EBE0; --sage:#A8BFA8; --sage-light:#C8DBC8;
+  --blush:#E8C4B8; --blush-deep:#D4A090; --gold:#D4A85C; --gold-light:#E8C87C;
+  --dark:#3C3228; --mid:#7A6A58; --soft:#A89880; --white:#FFFFFF;
+  --font-serif:'Cormorant Garamond',serif; --font-sans:'Jost',sans-serif; --font-script:'Dancing Script',cursive;
+}
+html { scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--dark); font-family:var(--font-sans); font-weight:300; line-height:1.7; overflow-x:hidden; }
+h1,h2,h3,h4 { font-family:var(--font-serif); font-weight:400; line-height:1.2; }
+.label { font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--soft); }
+
+/* NAV */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1rem 2.5rem;
+  background:rgba(250,246,240,.93); backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(168,152,128,.15);
+}
+.nav-logo { font-family:var(--font-script); font-size:1.5rem; color:var(--dark); text-decoration:none; }
+.nav-right { display:flex; align-items:center; gap:1.5rem; }
 .nav-links { display:flex; gap:2rem; list-style:none; }
-.nav-links a { font-size:.75rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mid); text-decoration:none; }
-.nav-cta { background: var(--dark); color: var(--cream) !important; padding: .5rem 1.4rem; border-radius: 2rem; }
-#hero { min-height: 100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding: 8rem 2rem 5rem; position:relative; overflow:hidden; }
-.hero-title { font-size: clamp(3rem, 8vw, 6.5rem); color: var(--dark); margin-bottom:.5rem; }
-.hero-title em { color: var(--blush-deep); font-style: italic; }
-.hero-subtitle-script { font-family: var(--font-script); font-size: clamp(1.3rem, 3vw, 2rem); color: var(--sage); margin-bottom:1.8rem; }
-.hero-desc { max-width: 520px; font-size: 1.05rem; color: var(--mid); line-height:1.8; margin: 0 auto 2.5rem; }
-.hero-btns { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-bottom:3.5rem; }
-.btn-primary { display:inline-flex; align-items:center; gap:.5rem; background: var(--dark); color: var(--cream); padding: .9rem 2.2rem; border-radius: 3rem; font-size:.85rem; letter-spacing:.08em; text-decoration:none; box-shadow: 0 4px 20px rgba(60,50,40,.15); }
-.btn-secondary { display:inline-flex; align-items:center; gap:.5rem; background: transparent; color: var(--dark); padding: .9rem 2.2rem; border-radius: 3rem; border: 1.5px solid rgba(60,50,40,.25); font-size:.85rem; letter-spacing:.08em; text-decoration:none; }
-.hero-cards { display:flex; gap:1.2rem; justify-content:center; flex-wrap:wrap; }
-.mini-card { width: 110px; height: 160px; background: var(--white); border-radius: 14px; box-shadow: 0 8px 30px rgba(60,50,40,.1); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.4rem; padding:.8rem .5rem; position:relative; }
-.mc-blush { background: linear-gradient(160deg, #FFF5F2, #FFE8E0); }
-.mc-sage { background: linear-gradient(160deg, #F2F8F2, #E0EEE0); }
-.mc-sky { background: linear-gradient(160deg, #F0F6FF, #DFF0FF); }
-.mc-lav { background: linear-gradient(160deg, #F5F0FF, #EAE0FF); }
-.mc-gold { background: linear-gradient(160deg, #FFFBF0, #FFF3D0); }
-.card-label-mini { font-size:.42rem; letter-spacing:.15em; text-transform:uppercase; color:var(--soft); text-align:center; }
+.nav-links a { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mid); text-decoration:none; transition:color .2s; }
+.nav-links a:hover { color:var(--dark); }
+.nav-cta { background:var(--dark) !important; color:var(--cream) !important; padding:.45rem 1.3rem; border-radius:2rem; }
+
+/* LANG TOGGLE */
+.lang-toggle {
+  display:flex; background:rgba(60,50,40,.08); border-radius:99px; padding:3px; gap:2px;
+}
+.lang-btn {
+  padding:4px 11px; border-radius:99px; border:none; cursor:pointer; font-size:11px;
+  font-family:var(--font-sans); font-weight:500; letter-spacing:.05em; text-transform:uppercase;
+  background:transparent; color:var(--mid); transition:all .2s;
+}
+.lang-btn.active { background:var(--dark); color:var(--cream); font-weight:700; }
+
+/* HERO */
+#hero {
+  min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:8rem 2rem 5rem; position:relative; overflow:hidden;
+}
+.hero-ring { position:absolute; border-radius:50%; border:1px solid rgba(168,152,128,.15); animation:pulse 6s ease-in-out infinite; }
+.hero-ring:nth-child(1) { width:500px; height:500px; animation-delay:0s; }
+.hero-ring:nth-child(2) { width:750px; height:750px; animation-delay:1.5s; }
+@keyframes pulse { 0%,100%{opacity:.3;transform:scale(1)} 50%{opacity:.07;transform:scale(1.02)} }
+.hero-title { font-size:clamp(3rem,8vw,6.5rem); color:var(--dark); margin-bottom:.5rem; animation:fadeUp .8s ease both; }
+.hero-title em { color:var(--blush-deep); font-style:italic; }
+.hero-script { font-family:var(--font-script); font-size:clamp(1.2rem,3vw,1.9rem); color:var(--sage); margin-bottom:1.8rem; animation:fadeUp .8s .15s ease both; }
+.hero-desc { max-width:520px; font-size:1.02rem; color:var(--mid); line-height:1.8; margin:0 auto 2.5rem; animation:fadeUp .8s .25s ease both; }
+.hero-btns { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-bottom:3.5rem; animation:fadeUp .8s .35s ease both; }
+.btn-primary { display:inline-flex; align-items:center; gap:.5rem; background:var(--dark); color:var(--cream); padding:.9rem 2.2rem; border-radius:3rem; font-size:.85rem; letter-spacing:.08em; text-decoration:none; box-shadow:0 4px 20px rgba(60,50,40,.15); transition:all .2s; }
+.btn-primary:hover { background:var(--blush-deep); transform:translateY(-2px); }
+.btn-secondary { display:inline-flex; align-items:center; gap:.5rem; background:transparent; color:var(--dark); padding:.9rem 2.2rem; border-radius:3rem; border:1.5px solid rgba(60,50,40,.22); font-size:.85rem; letter-spacing:.08em; text-decoration:none; transition:all .2s; }
+.btn-secondary:hover { border-color:var(--blush-deep); color:var(--blush-deep); }
+
+/* HERO CARDS */
+.hero-cards { display:flex; gap:1.2rem; justify-content:center; flex-wrap:wrap; animation:fadeUp .8s .45s ease both; }
+.mini-card { width:110px; height:160px; border-radius:14px; box-shadow:0 8px 30px rgba(60,50,40,.1); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.4rem; padding:.8rem .5rem; transition:transform .3s; }
+.mini-card:hover { transform:translateY(-8px) rotate(-1deg); }
+.mini-card:nth-child(2) { transform:translateY(-15px) rotate(1.5deg); }
+.mc-blush { background:linear-gradient(160deg,#FFF5F2,#FFE8E0); }
+.mc-sage  { background:linear-gradient(160deg,#F2F8F2,#E0EEE0); }
+.mc-sky   { background:linear-gradient(160deg,#F0F6FF,#DFF0FF); }
+.mc-lav   { background:linear-gradient(160deg,#F5F0FF,#EAE0FF); }
+.mc-gold  { background:linear-gradient(160deg,#FFFBF0,#FFF3D0); }
+.card-label-mini { font-size:.4rem; letter-spacing:.15em; text-transform:uppercase; color:var(--soft); text-align:center; }
 .card-emoji { font-size:2rem; }
-.card-text-mini { font-family: var(--font-serif); font-size:.52rem; text-align:center; color:var(--dark); line-height:1.3; padding:0 .2rem; }
+.card-text-mini { font-family:var(--font-serif); font-size:.5rem; text-align:center; color:var(--dark); line-height:1.3; }
 .card-stars { font-size:.35rem; color:var(--gold); letter-spacing:.1em; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+/* SECTIONS */
 section { position:relative; }
-.section-inner { max-width: 1100px; margin: 0 auto; padding: 6rem 2rem; }
-#problem { background: var(--cream-deep); }
-.problem-grid { display:grid; grid-template-columns: 1fr 1fr; gap:4rem; align-items:center; }
-.problem-text h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom:1.2rem; color:var(--dark); }
+.section-inner { max-width:1100px; margin:0 auto; padding:6rem 2rem; }
+.section-inner--narrow { max-width:800px; }
+
+/* PROBLEM */
+#problem { background:var(--cream-deep); }
+.problem-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+.section-tag { display:inline-flex; align-items:center; gap:.5rem; background:rgba(212,160,144,.15); color:var(--blush-deep); padding:.35rem 1rem; border-radius:2rem; font-size:.68rem; letter-spacing:.15em; text-transform:uppercase; margin-bottom:1.5rem; }
+.problem-text h2 { font-size:clamp(2rem,4vw,3rem); margin-bottom:1.2rem; }
 .problem-text p { color:var(--mid); font-size:1rem; margin-bottom:1rem; }
 .problem-list { list-style:none; margin-top:1.5rem; }
 .problem-list li { display:flex; align-items:flex-start; gap:.8rem; padding:.8rem 0; border-bottom:1px solid rgba(168,152,128,.15); color:var(--mid); font-size:.92rem; }
-.quote-card { background:var(--white); border-radius:20px; padding:1.5rem; box-shadow:0 4px 20px rgba(60,50,40,.07); margin-bottom:1rem; }
-.quote-card p { font-family:var(--font-serif); font-size:1.05rem; font-style:italic; color:var(--dark); line-height:1.6; }
+.problem-list li:last-child { border:none; }
+.quote-card { background:var(--white); border-radius:20px; padding:1.5rem; box-shadow:0 4px 20px rgba(60,50,40,.07); margin-bottom:1rem; position:relative; }
+.quote-card::before { content:'"'; font-family:var(--font-serif); font-size:4rem; color:var(--blush); opacity:.4; position:absolute; top:.2rem; left:1rem; line-height:1; }
+.quote-card p { font-family:var(--font-serif); font-size:1.05rem; font-style:italic; color:var(--dark); padding-top:.8rem; line-height:1.6; }
 .quote-author { font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--soft); margin-top:.8rem; }
+
+/* SOLUTION */
 #solution { background:var(--cream); text-align:center; }
-.solution-header h2 { font-size: clamp(2rem, 4.5vw, 3.2rem); color:var(--dark); margin-bottom:1.2rem; }
-.solution-header p { max-width:580px; margin:0 auto 3.5rem; color:var(--mid); font-size:1rem; }
-.benefits-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:1.5rem; }
-.benefit-card { background:var(--white); border-radius:24px; padding:2rem 1.5rem; text-align:center; box-shadow:0 4px 24px rgba(60,50,40,.06); }
-.benefit-icon { width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.6rem; margin:0 auto 1rem; background:rgba(232,196,184,.25); }
+.solution-header { margin-bottom:3rem; }
+.solution-header .eyebrow { font-family:var(--font-script); font-size:1.5rem; color:var(--sage); display:block; margin-bottom:.5rem; }
+.solution-header h2 { font-size:clamp(2rem,4.5vw,3.2rem); margin-bottom:1rem; }
+.solution-header p { max-width:580px; margin:0 auto; color:var(--mid); font-size:1rem; }
+.benefits-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:3rem; }
+.benefit-card { background:var(--white); border-radius:24px; padding:2rem 1.5rem; text-align:center; box-shadow:0 4px 24px rgba(60,50,40,.06); transition:transform .25s; position:relative; overflow:hidden; }
+.benefit-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; border-radius:0 0 24px 24px; opacity:0; transition:opacity .25s; }
+.benefit-card:hover { transform:translateY(-5px); }
+.benefit-card:hover::after { opacity:1; }
+.bc-1::after { background:linear-gradient(90deg,#E8C4B8,#D4A090); }
+.bc-2::after { background:linear-gradient(90deg,#C8DBC8,#A8BFA8); }
+.bc-3::after { background:linear-gradient(90deg,#B8D4E8,#C4B8D8); }
+.bc-4::after { background:linear-gradient(90deg,#C4B8D8,#E8C4B8); }
+.bc-5::after { background:linear-gradient(90deg,#E8C87C,#D4A85C); }
+.bc-6::after { background:linear-gradient(90deg,#F2EBE0,#C8DBC8); }
+.benefit-icon { width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.6rem; margin:0 auto 1rem; }
+.bi-1 { background:rgba(232,196,184,.25); } .bi-2 { background:rgba(168,191,168,.25); }
+.bi-3 { background:rgba(184,212,232,.25); } .bi-4 { background:rgba(196,184,216,.25); }
+.bi-5 { background:rgba(212,168,92,.2); }  .bi-6 { background:rgba(242,235,224,.6); }
 .benefit-card h3 { font-family:var(--font-serif); font-size:1.15rem; margin-bottom:.6rem; color:var(--dark); }
 .benefit-card p { font-size:.88rem; color:var(--mid); line-height:1.65; }
-#pricing { background:var(--cream-deep); text-align:center; }
+
+/* HOW IT WORKS */
+#how { background:var(--cream-deep); }
+.how-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+.how-steps { display:flex; flex-direction:column; gap:2rem; }
+.how-step { display:flex; gap:1.2rem; align-items:flex-start; }
+.step-number { width:42px; height:42px; border-radius:50%; background:var(--dark); color:var(--cream); display:flex; align-items:center; justify-content:center; font-family:var(--font-serif); font-size:1.1rem; flex-shrink:0; }
+.step-content h4 { font-family:var(--font-serif); font-size:1.15rem; color:var(--dark); margin-bottom:.3rem; }
+.step-content p { font-size:.9rem; color:var(--mid); }
+.how-visual { display:flex; align-items:center; justify-content:center; min-height:320px; }
+.big-card { width:200px; background:linear-gradient(150deg,#FFF5F0,#FFE8DC); border-radius:22px; padding:1.8rem 1.2rem; box-shadow:0 20px 60px rgba(60,50,40,.15); display:flex; flex-direction:column; align-items:center; gap:.8rem; text-align:center; animation:cardFloat 4s ease-in-out infinite; }
+@keyframes cardFloat { 0%,100%{transform:translateY(0) rotate(-1deg)} 50%{transform:translateY(-10px) rotate(1deg)} }
+.big-card-label { font-size:.52rem; letter-spacing:.2em; text-transform:uppercase; color:var(--soft); }
+.big-card-emoji { font-size:4rem; }
+.big-card-text { font-family:var(--font-serif); font-size:.95rem; color:var(--dark); font-style:italic; line-height:1.5; }
+.big-card-stars { color:var(--gold); font-size:.55rem; letter-spacing:.2em; }
+
+/* PRICING */
+#pricing { background:var(--cream); text-align:center; }
 .pricing-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; max-width:800px; margin:3rem auto 0; }
-.price-card { background:var(--white); border-radius:28px; padding:2.5rem 2rem; box-shadow:0 8px 32px rgba(60,50,40,.08); text-align:left; position:relative; }
+.price-card { background:var(--white); border-radius:28px; padding:2.5rem 2rem; box-shadow:0 8px 32px rgba(60,50,40,.08); text-align:left; position:relative; transition:transform .25s; }
+.price-card:hover { transform:translateY(-4px); }
 .price-card.featured { background:var(--dark); color:var(--cream); }
 .price-badge { position:absolute; top:1.2rem; right:1.2rem; background:var(--gold); color:var(--dark); font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; padding:.3rem .8rem; border-radius:2rem; }
 .price-type { font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--soft); margin-bottom:.8rem; }
+.price-card.featured .price-type { color:rgba(250,246,240,.5); }
 .price-amount { font-family:var(--font-serif); font-size:3.5rem; line-height:1; color:var(--dark); margin:1rem 0; }
 .price-card.featured .price-amount { color:var(--cream); }
 .price-features { list-style:none; margin:1.2rem 0 2rem; display:flex; flex-direction:column; gap:.7rem; }
 .price-features li { display:flex; align-items:center; gap:.6rem; font-size:.88rem; color:var(--mid); }
 .price-card.featured .price-features li { color:rgba(250,246,240,.75); }
 .check { color:var(--sage); }
-.btn-price { display:block; text-align:center; padding:.85rem 1.5rem; border-radius:3rem; font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; text-decoration:none; width:100%; background:var(--dark); color:var(--cream); }
+.btn-price { display:block; text-align:center; padding:.85rem 1.5rem; border-radius:3rem; font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; text-decoration:none; width:100%; background:var(--dark); color:var(--cream); transition:background .2s; }
+.btn-price:hover { background:var(--blush-deep); }
 .price-card.featured .btn-price { background:var(--cream); color:var(--dark); }
-#cta { background:var(--dark); text-align:center; padding:6rem 2rem; }
+.price-card.featured .btn-price:hover { background:var(--gold-light); }
+
+/* TESTIMONIALS */
+#testimonials { background:var(--cream-deep); }
+.testimonials-header { text-align:center; margin-bottom:3rem; }
+.testimonials-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+.testimonial-card { background:var(--white); border-radius:24px; padding:2rem 1.5rem; box-shadow:0 4px 20px rgba(60,50,40,.06); }
+.testi-stars { color:var(--gold); font-size:.85rem; letter-spacing:.1em; margin-bottom:1rem; }
+.testi-text { font-family:var(--font-serif); font-size:1rem; font-style:italic; color:var(--dark); line-height:1.65; margin-bottom:1.2rem; }
+.testi-name { font-size:.82rem; font-weight:500; color:var(--dark); }
+.testi-role { font-size:.72rem; color:var(--soft); }
+.testi-author { display:flex; align-items:center; gap:.8rem; }
+.testi-avatar { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
+
+/* FAQ */
+#faq { background:var(--cream); }
+.faq-header { text-align:center; margin-bottom:3rem; }
+.faq-list { max-width:720px; margin:0 auto; display:flex; flex-direction:column; gap:.8rem; }
+.faq-item { background:var(--white); border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(60,50,40,.05); }
+.faq-question { width:100%; display:flex; align-items:center; justify-content:space-between; padding:1.2rem 1.5rem; background:none; border:none; cursor:pointer; font-family:var(--font-serif); font-size:1rem; color:var(--dark); text-align:left; transition:color .2s; }
+.faq-question:hover { color:var(--blush-deep); }
+.faq-arrow { font-size:.7rem; transition:transform .3s; color:var(--soft); }
+.faq-item.open .faq-arrow { transform:rotate(180deg); }
+.faq-answer { max-height:0; overflow:hidden; transition:max-height .35s ease; }
+.faq-item.open .faq-answer { max-height:220px; }
+.faq-answer-inner { padding:0 1.5rem 1.2rem; font-size:.9rem; color:var(--mid); line-height:1.7; }
+
+/* CTA */
+#cta { background:var(--dark); text-align:center; padding:6rem 2rem; position:relative; overflow:hidden; }
+.cta-ring { position:absolute; border-radius:50%; border:1px solid rgba(250,246,240,.07); }
+.cta-ring:nth-child(1) { width:600px; height:600px; top:50%; left:50%; transform:translate(-50%,-50%); }
+.cta-ring:nth-child(2) { width:900px; height:900px; top:50%; left:50%; transform:translate(-50%,-50%); }
+.cta-inner { position:relative; z-index:2; }
+#cta .eyebrow { font-family:var(--font-script); font-size:1.6rem; color:var(--sage-light,#C8DBC8); display:block; margin-bottom:.8rem; }
 #cta h2 { font-size:clamp(2.2rem,5vw,4rem); color:var(--cream); margin-bottom:1.2rem; }
 #cta p { max-width:480px; margin:0 auto 2.5rem; color:rgba(250,246,240,.65); }
-footer { background:var(--dark); padding:2rem; text-align:center; }
-footer p { font-size:.75rem; color:rgba(250,246,240,.3); }
+
+/* FOOTER */
+footer { background:var(--dark); border-top:1px solid rgba(250,246,240,.08); padding:2rem; text-align:center; }
 .footer-logo { font-family:var(--font-script); font-size:1.8rem; color:rgba(250,246,240,.5); display:block; margin-bottom:1rem; }
-@media(max-width:900px){ .nav-links { display:none; } .problem-grid { grid-template-columns:1fr; } .benefits-grid { grid-template-columns:1fr 1fr; } .pricing-grid { grid-template-columns:1fr; max-width:400px; } }
-@media(max-width:600px){ .benefits-grid { grid-template-columns:1fr; } }
+footer p { font-size:.75rem; color:rgba(250,246,240,.3); letter-spacing:.08em; }
+
+/* SCROLL REVEAL */
+.reveal { opacity:0; transform:translateY(30px); transition:opacity .7s ease,transform .7s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:.1s; }
+.reveal-delay-2 { transition-delay:.2s; }
+.reveal-delay-3 { transition-delay:.3s; }
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav { padding:1rem 1.5rem; }
+  .nav-links { display:none; }
+  .problem-grid,.how-grid { grid-template-columns:1fr; }
+  .benefits-grid { grid-template-columns:1fr 1fr; }
+  .testimonials-grid { grid-template-columns:1fr; }
+  .pricing-grid { grid-template-columns:1fr; max-width:400px; }
+  .how-visual { min-height:200px; }
+}
+@media(max-width:600px){
+  .benefits-grid { grid-template-columns:1fr; }
+  .section-inner { padding:4rem 1.2rem; }
+  .mini-card { width:88px; height:130px; }
+}
 </style>
 </head>
 <body>
+
+<!-- NAV -->
 <nav>
   <a class="nav-logo" href="#">Seeds of Light</a>
-  <ul class="nav-links">
-    <li><a href="#problem">El problema</a></li>
-    <li><a href="#solution">Solución</a></li>
-    <li><a href="#pricing" class="nav-cta">Conseguir mi mazo</a></li>
-  </ul>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#problem" data-t="nav_problem">El problema</a></li>
+      <li><a href="#solution" data-t="nav_solution">Solución</a></li>
+      <li><a href="#how" data-t="nav_how">Cómo funciona</a></li>
+      <li><a href="#pricing" class="nav-cta" data-t="nav_cta">Conseguir mi mazo</a></li>
+    </ul>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('es')">🇪🇸 ES</button>
+      <button class="lang-btn" onclick="setLang('en')">🇺🇸 EN</button>
+    </div>
+  </div>
 </nav>
+
+<!-- HERO -->
 <section id="hero">
+  <div class="hero-ring"></div>
+  <div class="hero-ring"></div>
   <h1 class="hero-title">Seeds of <em>Light</em></h1>
-  <p class="hero-subtitle-script">Semillas de Confianza y Calma para tus hijos</p>
-  <p class="hero-desc">Un mazo de 40 cartas diseñadas con amor para acompañar a los niños de 3 a 7 años a gestionar sus emociones, cultivar su autoestima y conectar con su calma interior.</p>
+  <p class="hero-script" data-t="hero_script">Semillas de Confianza y Calma para tus hijos</p>
+  <p class="hero-desc" data-t="hero_desc">Un mazo de 40 cartas diseñadas con amor para acompañar a los niños de 3 a 7 años a gestionar sus emociones, cultivar su autoestima y conectar con su calma interior.</p>
   <div class="hero-btns">
-    <a href="#pricing" class="btn-primary">✦ Quiero mi mazo ahora</a>
-    <a href="/" class="btn-secondary">Ver las cartas →</a>
+    <a href="#pricing" class="btn-primary" data-t="hero_cta1">✦ Quiero mi mazo ahora</a>
+    <a href="/" class="btn-secondary" data-t="hero_cta2">Ver las cartas →</a>
   </div>
   <div class="hero-cards">
-    <div class="mini-card mc-blush"><div class="card-label-mini">Afirmación</div><div class="card-emoji">🦋</div><div class="card-text-mini">Soy valiente y puedo lograrlo</div><div class="card-stars">✦ ✦ ✦</div></div>
-    <div class="mini-card mc-sage"><div class="card-label-mini">Calma</div><div class="card-emoji">🐢</div><div class="card-text-mini">Respiro y encuentro mi paz</div><div class="card-stars">✦ ✦ ✦</div></div>
-    <div class="mini-card mc-lav"><div class="card-label-mini">Amor propio</div><div class="card-emoji">🌸</div><div class="card-text-mini">Me quiero tal como soy</div><div class="card-stars">✦ ✦ ✦</div></div>
-    <div class="mini-card mc-gold"><div class="card-label-mini">Gratitud</div><div class="card-emoji">⭐</div><div class="card-text-mini">Hoy doy gracias por...</div><div class="card-stars">✦ ✦ ✦</div></div>
-    <div class="mini-card mc-sky"><div class="card-label-mini">Mindfulness</div><div class="card-emoji">🌬️</div><div class="card-text-mini">Siento el viento en mi cara</div><div class="card-stars">✦ ✦ ✦</div></div>
+    <div class="mini-card mc-blush">
+      <div class="card-label-mini" data-t="card1_label">Afirmación</div>
+      <div class="card-emoji">🦋</div>
+      <div class="card-text-mini" data-t="card1_text">Soy valiente y puedo lograrlo</div>
+      <div class="card-stars">✦ ✦ ✦</div>
+    </div>
+    <div class="mini-card mc-sage">
+      <div class="card-label-mini" data-t="card2_label">Calma</div>
+      <div class="card-emoji">🐢</div>
+      <div class="card-text-mini" data-t="card2_text">Respiro y encuentro mi paz</div>
+      <div class="card-stars">✦ ✦ ✦</div>
+    </div>
+    <div class="mini-card mc-lav">
+      <div class="card-label-mini" data-t="card3_label">Amor propio</div>
+      <div class="card-emoji">🌸</div>
+      <div class="card-text-mini" data-t="card3_text">Me quiero tal como soy</div>
+      <div class="card-stars">✦ ✦ ✦</div>
+    </div>
+    <div class="mini-card mc-gold">
+      <div class="card-label-mini" data-t="card4_label">Gratitud</div>
+      <div class="card-emoji">⭐</div>
+      <div class="card-text-mini" data-t="card4_text">Hoy doy gracias por...</div>
+      <div class="card-stars">✦ ✦ ✦</div>
+    </div>
+    <div class="mini-card mc-sky">
+      <div class="card-label-mini" data-t="card5_label">Mindfulness</div>
+      <div class="card-emoji">🌬️</div>
+      <div class="card-text-mini" data-t="card5_text">Siento el viento en mi cara</div>
+      <div class="card-stars">✦ ✦ ✦</div>
+    </div>
   </div>
 </section>
-<section id="problem"><div class="section-inner"><div class="problem-grid">
-  <div class="problem-text"><h2>¿Tu hijo tiene explosiones emocionales que no sabes cómo calmar?</h2>
-    <p>Los niños de 3 a 7 años viven en un estado de emociones gigantes dentro de un cuerpo pequeño. No es que sean difíciles — es que todavía no tienen las herramientas.</p>
-    <ul class="problem-list">
-      <li>😤 Rabietas que parecen salir de la nada</li>
-      <li>😨 Miedos nocturnos, ansiedad, inseguridad</li>
-      <li>💔 Frases como "no puedo", "soy malo"</li>
-      <li>😴 Noches difíciles donde el sueño no llega</li>
-    </ul>
-  </div>
-  <div>
-    <div class="quote-card"><p>"Miraba a mi hija llorar y no sabía qué decirle."</p><div class="quote-author">— Sofía, mamá de Lucía, 4 años</div></div>
-    <div class="quote-card"><p>"Mi hijo se quedaba paralizado y no tenía ninguna herramienta."</p><div class="quote-author">— María José, mamá de Tomás, 6 años</div></div>
-  </div>
-</div></div></section>
-<section id="solution"><div class="section-inner">
-  <div class="solution-header"><h2>Un ritual diario de 5 minutos que cambia todo</h2><p>Seeds of Light es un mazo de 40 cartas diseñadas para que tú y tu hijo tengan un momento de conexión, calma y crecimiento emocional — cada día.</p></div>
-  <div class="benefits-grid">
-    <div class="benefit-card"><div class="benefit-icon">🦋</div><h3>Confianza que crece</h3><p>Afirmaciones diseñadas por psicólogos infantiles para construir autoestima real.</p></div>
-    <div class="benefit-card"><div class="benefit-icon">🌿</div><h3>Calma en momentos difíciles</h3><p>Técnicas de regulación emocional convertidas en actividades simples.</p></div>
-    <div class="benefit-card"><div class="benefit-icon">💙</div><h3>Conexión mamá-hijo</h3><p>Un ritual compartido que fortalece el vínculo.</p></div>
-    <div class="benefit-card"><div class="benefit-icon">🌸</div><h3>Amor propio auténtico</h3><p>Enseñarle a tu hijo que merece ser amado exactamente como es.</p></div>
-    <div class="benefit-card"><div class="benefit-icon">⭐</div><h3>Gratitud que transforma</h3><p>Los niños que practican gratitud son más felices y resilientes.</p></div>
-    <div class="benefit-card"><div class="benefit-icon">🌙</div><h3>Sueño más tranquilo</h3><p>Rituales de relajación para dormir en paz.</p></div>
-  </div>
-</div></section>
-<section id="pricing"><div class="section-inner">
-  <div class="solution-header"><span class="label">elige tu versión</span><h2>Planta estas semillas hoy</h2></div>
-  <div class="pricing-grid">
-    <div class="price-card">
-      <div class="price-type">versión digital</div><h3>PDF Imprimible</h3>
-      <div class="price-amount">$14.99</div>
-      <ul class="price-features">
-        <li><span class="check">✦</span> 40 cartas PDF alta resolución</li>
-        <li><span class="check">✦</span> Descarga instantánea</li>
-        <li><span class="check">✦</span> Imprime en casa o copistería</li>
-        <li><span class="check">✦</span> Actualización gratuita</li>
-      </ul>
-      <a href="#" class="btn-price">Descargar ahora</a>
-    </div>
-    <div class="price-card featured">
-      <div class="price-badge">✦ Más amado</div>
-      <div class="price-type">versión física</div><h3>Mazo Impreso</h3>
-      <div class="price-amount">$38.99</div>
-      <ul class="price-features">
-        <li><span class="check">✦</span> 40 cartas en cartulina premium</li>
-        <li><span class="check">✦</span> Acabado mate plastificado</li>
-        <li><span class="check">✦</span> Caja diseñada con amor</li>
-        <li><span class="check">✦</span> PDF incluido de regalo</li>
-      </ul>
-      <a href="#" class="btn-price">Quiero el mazo físico</a>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="section-inner">
+    <div class="problem-grid">
+      <div class="problem-text reveal">
+        <div class="section-tag">✦ <span data-t="problem_tag">Algo que todas las mamás sienten</span></div>
+        <h2 data-t="problem_h2">¿Tu hijo tiene explosiones emocionales que no sabes cómo calmar?</h2>
+        <p data-t="problem_p1">Los niños de 3 a 7 años viven en un estado de emociones gigantes dentro de un cuerpo pequeño. No es que sean difíciles — es que todavía no tienen las herramientas para gestionar lo que sienten.</p>
+        <p data-t="problem_p2">Y tú, como mamá, quieres ayudarle. Pero los recursos no siempre son accesibles o cálidos.</p>
+        <ul class="problem-list">
+          <li data-t="problem_li1">😤 Rabietas que parecen salir de la nada y no sabes cómo responder</li>
+          <li data-t="problem_li2">😨 Miedos nocturnos, ansiedad de separación, inseguridad constante</li>
+          <li data-t="problem_li3">💔 Frases como "no puedo", "soy malo", "nadie me quiere"</li>
+          <li data-t="problem_li4">😴 Noches difíciles donde el sueño no llega y la mente no para</li>
+        </ul>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="quote-card">
+          <p data-t="quote1_text">"Miraba a mi hija llorar y no sabía qué decirle. Quería darle algo real, no solo palabras vacías."</p>
+          <div class="quote-author" data-t="quote1_author">— Sofía, mamá de Lucía, 4 años</div>
+        </div>
+        <div class="quote-card">
+          <p data-t="quote2_text">"Mi hijo se quedaba paralizado cuando se sentía mal. No tenía ninguna herramienta para salir de ahí."</p>
+          <div class="quote-author" data-t="quote2_author">— María José, mamá de Tomás, 6 años</div>
+        </div>
+      </div>
     </div>
   </div>
-</div></section>
+</section>
+
+<!-- SOLUTION -->
+<section id="solution">
+  <div class="section-inner">
+    <div class="solution-header reveal">
+      <span class="eyebrow" data-t="solution_eyebrow">la solución</span>
+      <h2 data-t="solution_h2">Un ritual diario de 5 minutos<br>que cambia todo</h2>
+      <p data-t="solution_p">Seeds of Light es un mazo de 40 cartas diseñadas para que tú y tu hijo tengan un momento de conexión, calma y crecimiento emocional — cada día.</p>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card bc-1 reveal reveal-delay-1">
+        <div class="benefit-icon bi-1">🦋</div>
+        <h3 data-t="ben1_h">Confianza que crece</h3>
+        <p data-t="ben1_p">Afirmaciones diseñadas por psicólogos infantiles para construir autoestima real desde pequeños.</p>
+      </div>
+      <div class="benefit-card bc-2 reveal reveal-delay-2">
+        <div class="benefit-icon bi-2">🌿</div>
+        <h3 data-t="ben2_h">Calma en momentos difíciles</h3>
+        <p data-t="ben2_p">Técnicas de regulación emocional convertidas en actividades simples que los niños pueden hacer.</p>
+      </div>
+      <div class="benefit-card bc-3 reveal reveal-delay-3">
+        <div class="benefit-icon bi-3">💙</div>
+        <h3 data-t="ben3_h">Conexión mamá-hijo</h3>
+        <p data-t="ben3_p">Un ritual compartido que fortalece el vínculo y crea recuerdos hermosos juntos.</p>
+      </div>
+      <div class="benefit-card bc-4 reveal reveal-delay-1">
+        <div class="benefit-icon bi-4">🌸</div>
+        <h3 data-t="ben4_h">Amor propio auténtico</h3>
+        <p data-t="ben4_p">No es vanidad — es enseñarle a tu hijo que merece ser amado exactamente como es.</p>
+      </div>
+      <div class="benefit-card bc-5 reveal reveal-delay-2">
+        <div class="benefit-icon bi-5">⭐</div>
+        <h3 data-t="ben5_h">Gratitud que transforma</h3>
+        <p data-t="ben5_p">La ciencia lo confirma: los niños que practican gratitud son más felices y resilientes.</p>
+      </div>
+      <div class="benefit-card bc-6 reveal reveal-delay-3">
+        <div class="benefit-icon bi-6">🌙</div>
+        <h3 data-t="ben6_h">Sueño más tranquilo</h3>
+        <p data-t="ben6_p">Rituales de relajación para la noche que ayudan a los niños a soltar el día y dormir en paz.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-inner">
+    <div class="how-grid">
+      <div>
+        <span class="label" data-t="how_label">cómo funciona</span>
+        <h2 style="font-size:clamp(2rem,4vw,3rem);margin:.6rem 0 2rem">
+          <span data-t="how_h2a">Un ritual simple.</span><br>
+          <em style="font-style:italic;color:var(--blush-deep)" data-t="how_h2b">Un impacto profundo.</em>
+        </h2>
+        <div class="how-steps">
+          <div class="how-step reveal">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4 data-t="step1_h">Elige una carta juntos</h4>
+              <p data-t="step1_p">Cada mañana o noche, tu hijo elige la carta que le llama. Ese pequeño gesto ya es magia.</p>
+            </div>
+          </div>
+          <div class="how-step reveal reveal-delay-1">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4 data-t="step2_h">Léela en voz alta</h4>
+              <p data-t="step2_p">La afirmación entra por los oídos y se instala en el corazón. Repítela junto a él.</p>
+            </div>
+          </div>
+          <div class="how-step reveal reveal-delay-2">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h4 data-t="step3_h">Haz la actividad</h4>
+              <p data-t="step3_p">Algunas cartas traen micro-actividades de 2 minutos: respirar, dibujar, abrazar, agradecer.</p>
+            </div>
+          </div>
+          <div class="how-step reveal reveal-delay-3">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h4 data-t="step4_h">Guárdala como tesoro</h4>
+              <p data-t="step4_p">Tu hijo puede volver a la carta que necesita en cualquier momento del día.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="how-visual reveal reveal-delay-2">
+        <div class="big-card">
+          <div class="big-card-label" data-t="bigcard_label">✦ Calma ✦</div>
+          <div class="big-card-emoji">🌊</div>
+          <div class="big-card-text" data-t="bigcard_text">"Soy como el mar: a veces hay olas, pero siempre hay calma"</div>
+          <div class="big-card-stars">✦ ✦ ✦ ✦ ✦</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-inner section-inner--narrow">
+    <div class="solution-header reveal">
+      <span class="label" data-t="pricing_label">elige tu versión</span>
+      <h2 data-t="pricing_h2">Planta estas semillas hoy</h2>
+      <p data-t="pricing_p">El regalo más bonito que puedes darle a tu hijo cuesta menos que un café.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card reveal reveal-delay-1">
+        <div class="price-type" data-t="p1_type">versión digital</div>
+        <h3 data-t="p1_name">PDF Imprimible</h3>
+        <div class="price-amount">$14.99</div>
+        <ul class="price-features">
+          <li><span class="check">✦</span> <span data-t="p1_f1">40 cartas PDF alta resolución</span></li>
+          <li><span class="check">✦</span> <span data-t="p1_f2">Descarga instantánea</span></li>
+          <li><span class="check">✦</span> <span data-t="p1_f3">Imprime en casa o copistería</span></li>
+          <li><span class="check">✦</span> <span data-t="p1_f4">Actualización gratuita</span></li>
+        </ul>
+        <a href="#" class="btn-price" data-t="p1_btn">Descargar ahora</a>
+      </div>
+      <div class="price-card featured reveal reveal-delay-2">
+        <div class="price-badge" data-t="p2_badge">✦ Más amado</div>
+        <div class="price-type" data-t="p2_type">versión física</div>
+        <h3 data-t="p2_name">Mazo Impreso</h3>
+        <div class="price-amount">$38.99</div>
+        <ul class="price-features">
+          <li><span class="check">✦</span> <span data-t="p2_f1">40 cartas en cartulina premium</span></li>
+          <li><span class="check">✦</span> <span data-t="p2_f2">Acabado mate plastificado</span></li>
+          <li><span class="check">✦</span> <span data-t="p2_f3">Caja diseñada con amor</span></li>
+          <li><span class="check">✦</span> <span data-t="p2_f4">PDF incluido de regalo</span></li>
+        </ul>
+        <a href="#" class="btn-price" data-t="p2_btn">Quiero el mazo físico</a>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:1.5rem;font-size:.8rem;color:var(--soft)" data-t="pricing_guarantee">
+      ✦ Garantía de amor: si no te encanta, te devolvemos tu dinero en 30 días ✦
+    </p>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-inner">
+    <div class="testimonials-header reveal">
+      <span class="label" data-t="testi_label">familias que ya sembraron luz</span>
+      <h2 data-t="testi_h2">Lo que dicen las mamás</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text" data-t="t1_text">"Mi hija de 5 años pide su carta cada mañana antes de ir al colegio. Se ha vuelto parte de nuestra rutina y noto cómo ha crecido su seguridad."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(232,196,184,.3)">🌸</div>
+          <div>
+            <div class="testi-name">Ana Belén R.</div>
+            <div class="testi-role" data-t="t1_role">Mamá de Emma, 5 años · Madrid</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text" data-t="t2_text">"Compramos el mazo físico y es precioso. Mi hijo autista las usa todos los días y han sido una herramienta increíble."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(168,191,168,.3)">🌿</div>
+          <div>
+            <div class="testi-name">Carla M.</div>
+            <div class="testi-role" data-t="t2_role">Mamá de Marcos, 6 años · Buenos Aires</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-3">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text" data-t="t3_text">"Las imprimí en casa y son igual de bonitas. Las rabietas antes de dormir desaparecieron casi por completo. No puedo creer el cambio."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(196,184,216,.3)">💫</div>
+          <div>
+            <div class="testi-name">Valeria T.</div>
+            <div class="testi-role" data-t="t3_role">Mamá de Simón, 4 años · Ciudad de México</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-inner section-inner--narrow">
+    <div class="faq-header reveal">
+      <span class="label" data-t="faq_label">preguntas frecuentes</span>
+      <h2 data-t="faq_h2">Todo lo que quieres saber</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-t="faq1_q">¿Para qué edades son las cartas?</span>
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner" data-t="faq1_a">Las cartas están diseñadas especialmente para niños de 3 a 7 años, aunque muchas familias las usan con niños hasta los 9-10 años con excelentes resultados.</div></div>
+      </div>
+      <div class="faq-item reveal reveal-delay-1">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-t="faq2_q">¿Necesito impresora de buena calidad?</span>
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner" data-t="faq2_a">No necesariamente. El PDF está optimizado para verse hermoso incluso en impresoras domésticas estándar. También puedes llevarlo a cualquier copistería.</div></div>
+      </div>
+      <div class="faq-item reveal reveal-delay-2">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-t="faq3_q">¿Cuánto tiempo al día debo dedicarle?</span>
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner" data-t="faq3_a">Con 5 minutos al día es suficiente para empezar a ver cambios. Muchas familias eligen una carta por la mañana o como ritual nocturno.</div></div>
+      </div>
+      <div class="faq-item reveal reveal-delay-3">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-t="faq4_q">¿Pueden regalarlas?</span>
+          <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner" data-t="faq4_a">Son uno de los regalos más especiales que puedes hacer. La versión física viene en una caja preciosa lista para regalar.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
 <section id="cta">
-  <h2>Dale a tu hijo las herramientas que merece</h2>
-  <p>No necesitas ser perfecta. Solo necesitas este pequeño ritual de 5 minutos.</p>
-  <a href="#pricing" class="btn-primary" style="background:var(--cream);color:var(--dark);">✦ Conseguir mi mazo</a>
+  <div class="cta-ring"></div><div class="cta-ring"></div>
+  <div class="cta-inner">
+    <span class="eyebrow" data-t="cta_eyebrow">empieza hoy</span>
+    <h2 data-t="cta_h2">Dale a tu hijo<br>las herramientas que merece</h2>
+    <p data-t="cta_p">No necesitas ser perfecta. Solo necesitas este pequeño ritual de 5 minutos y unas cartas llenas de amor.</p>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center">
+      <a href="#pricing" class="btn-primary" style="background:var(--cream);color:var(--dark)" data-t="cta_btn1">✦ Conseguir mi mazo</a>
+      <a href="/" class="btn-secondary" style="border-color:rgba(250,246,240,.3);color:rgba(250,246,240,.7)" data-t="cta_btn2">Ver las cartas primero</a>
+    </div>
+  </div>
 </section>
+
+<!-- FOOTER -->
 <footer>
   <span class="footer-logo">Seeds of Light</span>
-  <p>© 2025 Seeds of Light · Hecho con amor para las familias del mundo</p>
+  <p data-t="footer_copy">© 2025 Seeds of Light · Hecho con amor para las familias del mundo</p>
+  <p style="margin-top:.5rem;color:rgba(250,246,240,.25)">contacto@seedsoflight.com &nbsp;·&nbsp; Etsy &nbsp;·&nbsp; Instagram</p>
 </footer>
+
+<script>
+// ── TRANSLATIONS ─────────────────────────────────────────
+const TRANSLATIONS = {
+  es: {
+    nav_problem:"El problema", nav_solution:"Solución", nav_how:"Cómo funciona", nav_cta:"Conseguir mi mazo",
+    hero_script:"Semillas de Confianza y Calma para tus hijos",
+    hero_desc:"Un mazo de 40 cartas diseñadas con amor para acompañar a los niños de 3 a 7 años a gestionar sus emociones, cultivar su autoestima y conectar con su calma interior.",
+    hero_cta1:"✦ Quiero mi mazo ahora", hero_cta2:"Ver las cartas →",
+    card1_label:"Afirmación", card1_text:"Soy valiente y puedo lograrlo",
+    card2_label:"Calma",      card2_text:"Respiro y encuentro mi paz",
+    card3_label:"Amor propio",card3_text:"Me quiero tal como soy",
+    card4_label:"Gratitud",   card4_text:"Hoy doy gracias por...",
+    card5_label:"Mindfulness",card5_text:"Siento el viento en mi cara",
+    problem_tag:"Algo que todas las mamás sienten",
+    problem_h2:"¿Tu hijo tiene explosiones emocionales que no sabes cómo calmar?",
+    problem_p1:"Los niños de 3 a 7 años viven en un estado de emociones gigantes dentro de un cuerpo pequeño. No es que sean difíciles — es que todavía no tienen las herramientas para gestionar lo que sienten.",
+    problem_p2:"Y tú, como mamá, quieres ayudarle. Pero los recursos no siempre son accesibles o cálidos.",
+    problem_li1:"😤 Rabietas que parecen salir de la nada y no sabes cómo responder",
+    problem_li2:"😨 Miedos nocturnos, ansiedad de separación, inseguridad constante",
+    problem_li3:"💔 Frases como \"no puedo\", \"soy malo\", \"nadie me quiere\"",
+    problem_li4:"😴 Noches difíciles donde el sueño no llega y la mente no para",
+    quote1_text:"\"Miraba a mi hija llorar y no sabía qué decirle. Quería darle algo real, no solo palabras vacías.\"",
+    quote1_author:"— Sofía, mamá de Lucía, 4 años",
+    quote2_text:"\"Mi hijo se quedaba paralizado cuando se sentía mal. No tenía ninguna herramienta para salir de ahí.\"",
+    quote2_author:"— María José, mamá de Tomás, 6 años",
+    solution_eyebrow:"la solución",
+    solution_h2:"Un ritual diario de 5 minutos<br>que cambia todo",
+    solution_p:"Seeds of Light es un mazo de 40 cartas diseñadas para que tú y tu hijo tengan un momento de conexión, calma y crecimiento emocional — cada día.",
+    ben1_h:"Confianza que crece",       ben1_p:"Afirmaciones diseñadas por psicólogos infantiles para construir autoestima real desde pequeños.",
+    ben2_h:"Calma en momentos difíciles",ben2_p:"Técnicas de regulación emocional convertidas en actividades simples que los niños pueden hacer.",
+    ben3_h:"Conexión mamá-hijo",         ben3_p:"Un ritual compartido que fortalece el vínculo y crea recuerdos hermosos juntos.",
+    ben4_h:"Amor propio auténtico",      ben4_p:"No es vanidad — es enseñarle a tu hijo que merece ser amado exactamente como es.",
+    ben5_h:"Gratitud que transforma",    ben5_p:"La ciencia lo confirma: los niños que practican gratitud son más felices y resilientes.",
+    ben6_h:"Sueño más tranquilo",        ben6_p:"Rituales de relajación para la noche que ayudan a los niños a soltar el día y dormir en paz.",
+    how_label:"cómo funciona", how_h2a:"Un ritual simple.", how_h2b:"Un impacto profundo.",
+    step1_h:"Elige una carta juntos",  step1_p:"Cada mañana o noche, tu hijo elige la carta que le llama. Ese pequeño gesto ya es magia.",
+    step2_h:"Léela en voz alta",        step2_p:"La afirmación entra por los oídos y se instala en el corazón. Repítela junto a él.",
+    step3_h:"Haz la actividad",         step3_p:"Algunas cartas traen micro-actividades de 2 minutos: respirar, dibujar, abrazar, agradecer.",
+    step4_h:"Guárdala como tesoro",     step4_p:"Tu hijo puede volver a la carta que necesita en cualquier momento del día.",
+    bigcard_label:"✦ Calma ✦", bigcard_text:"\"Soy como el mar: a veces hay olas, pero siempre hay calma\"",
+    pricing_label:"elige tu versión", pricing_h2:"Planta estas semillas hoy", pricing_p:"El regalo más bonito que puedes darle a tu hijo cuesta menos que un café.",
+    p1_type:"versión digital", p1_name:"PDF Imprimible",
+    p1_f1:"40 cartas PDF alta resolución", p1_f2:"Descarga instantánea", p1_f3:"Imprime en casa o copistería", p1_f4:"Actualización gratuita",
+    p1_btn:"Descargar ahora",
+    p2_badge:"✦ Más amado", p2_type:"versión física", p2_name:"Mazo Impreso",
+    p2_f1:"40 cartas en cartulina premium", p2_f2:"Acabado mate plastificado", p2_f3:"Caja diseñada con amor", p2_f4:"PDF incluido de regalo",
+    p2_btn:"Quiero el mazo físico",
+    pricing_guarantee:"✦ Garantía de amor: si no te encanta, te devolvemos tu dinero en 30 días ✦",
+    testi_label:"familias que ya sembraron luz", testi_h2:"Lo que dicen las mamás",
+    t1_text:"\"Mi hija de 5 años pide su carta cada mañana antes de ir al colegio. Se ha vuelto parte de nuestra rutina y noto cómo ha crecido su seguridad.\"",
+    t1_role:"Mamá de Emma, 5 años · Madrid",
+    t2_text:"\"Compramos el mazo físico y es precioso. Mi hijo autista las usa todos los días y han sido una herramienta increíble.\"",
+    t2_role:"Mamá de Marcos, 6 años · Buenos Aires",
+    t3_text:"\"Las imprimí en casa y son igual de bonitas. Las rabietas antes de dormir desaparecieron casi por completo. No puedo creer el cambio.\"",
+    t3_role:"Mamá de Simón, 4 años · Ciudad de México",
+    faq_label:"preguntas frecuentes", faq_h2:"Todo lo que quieres saber",
+    faq1_q:"¿Para qué edades son las cartas?", faq1_a:"Las cartas están diseñadas especialmente para niños de 3 a 7 años, aunque muchas familias las usan con niños hasta los 9-10 años con excelentes resultados.",
+    faq2_q:"¿Necesito impresora de buena calidad?", faq2_a:"No necesariamente. El PDF está optimizado para verse hermoso incluso en impresoras domésticas estándar. También puedes llevarlo a cualquier copistería.",
+    faq3_q:"¿Cuánto tiempo al día debo dedicarle?", faq3_a:"Con 5 minutos al día es suficiente para empezar a ver cambios. Muchas familias eligen una carta por la mañana o como ritual nocturno.",
+    faq4_q:"¿Pueden regalarlas?", faq4_a:"Son uno de los regalos más especiales que puedes hacer. La versión física viene en una caja preciosa lista para regalar.",
+    cta_eyebrow:"empieza hoy", cta_h2:"Dale a tu hijo<br>las herramientas que merece",
+    cta_p:"No necesitas ser perfecta. Solo necesitas este pequeño ritual de 5 minutos y unas cartas llenas de amor.",
+    cta_btn1:"✦ Conseguir mi mazo", cta_btn2:"Ver las cartas primero",
+    footer_copy:"© 2025 Seeds of Light · Hecho con amor para las familias del mundo",
+  },
+  en: {
+    nav_problem:"The problem", nav_solution:"Solution", nav_how:"How it works", nav_cta:"Get my deck",
+    hero_script:"Seeds of Confidence and Calm for your children",
+    hero_desc:"A deck of 40 cards lovingly designed to help children ages 3–7 manage their emotions, build self-esteem, and connect with their inner calm.",
+    hero_cta1:"✦ I want my deck now", hero_cta2:"See the cards →",
+    card1_label:"Affirmation", card1_text:"I am brave and I can do it",
+    card2_label:"Calm",        card2_text:"I breathe and find my peace",
+    card3_label:"Self-love",   card3_text:"I love myself just as I am",
+    card4_label:"Gratitude",   card4_text:"Today I give thanks for...",
+    card5_label:"Mindfulness", card5_text:"I feel the breeze on my face",
+    problem_tag:"Something every parent feels",
+    problem_h2:"Does your child have emotional meltdowns you don't know how to calm?",
+    problem_p1:"Children ages 3 to 7 live in a state of giant emotions inside a small body. They're not being difficult — they simply don't yet have the tools to manage what they feel.",
+    problem_p2:"And you, as a parent, want to help. But resources aren't always accessible or warm.",
+    problem_li1:"😤 Tantrums that seem to come out of nowhere",
+    problem_li2:"😨 Night fears, separation anxiety, constant insecurity",
+    problem_li3:"💔 Phrases like \"I can't\", \"I'm bad\", \"nobody loves me\"",
+    problem_li4:"😴 Difficult nights where sleep won't come and the mind won't stop",
+    quote1_text:"\"I watched my daughter cry and didn't know what to tell her. I wanted to give her something real, not just empty words.\"",
+    quote1_author:"— Sofia, mom of Lucia, 4 years old",
+    quote2_text:"\"My son would freeze when he felt bad. He had no tools to get out of that place.\"",
+    quote2_author:"— Mary Jo, mom of Thomas, 6 years old",
+    solution_eyebrow:"the solution",
+    solution_h2:"A 5-minute daily ritual<br>that changes everything",
+    solution_p:"Seeds of Light is a deck of 40 cards designed so you and your child can share a moment of connection, calm, and emotional growth — every day.",
+    ben1_h:"Confidence that grows",       ben1_p:"Affirmations designed by child psychologists to build real self-esteem from an early age.",
+    ben2_h:"Calm in difficult moments",   ben2_p:"Emotional regulation techniques turned into simple activities children can actually do.",
+    ben3_h:"Parent-child connection",      ben3_p:"A shared ritual that strengthens your bond and creates beautiful memories together.",
+    ben4_h:"Authentic self-love",          ben4_p:"It's not vanity — it's teaching your child they deserve to be loved exactly as they are.",
+    ben5_h:"Gratitude that transforms",   ben5_p:"Science confirms it: children who practice gratitude are happier and more resilient.",
+    ben6_h:"More peaceful sleep",          ben6_p:"Nighttime relaxation rituals that help children release the day and sleep peacefully.",
+    how_label:"how it works", how_h2a:"A simple ritual.", how_h2b:"A profound impact.",
+    step1_h:"Choose a card together",   step1_p:"Each morning or evening, your child picks the card that calls to them. That small act is already magic.",
+    step2_h:"Read it out loud",          step2_p:"The affirmation enters through the ears and settles in the heart. Repeat it together.",
+    step3_h:"Do the activity",           step3_p:"Some cards include 2-minute micro-activities: breathe, draw, hug, give thanks.",
+    step4_h:"Keep it as a treasure",    step4_p:"Your child can return to whatever card they need at any moment of the day.",
+    bigcard_label:"✦ Calm ✦", bigcard_text:"\"I am like the sea: sometimes there are waves, but there is always calm\"",
+    pricing_label:"choose your version", pricing_h2:"Plant these seeds today", pricing_p:"The most beautiful gift you can give your child costs less than a coffee.",
+    p1_type:"digital version", p1_name:"Printable PDF",
+    p1_f1:"40 high-resolution PDF cards", p1_f2:"Instant download", p1_f3:"Print at home or at a print shop", p1_f4:"Free updates forever",
+    p1_btn:"Download now",
+    p2_badge:"✦ Most loved", p2_type:"physical version", p2_name:"Printed Deck",
+    p2_f1:"40 cards on premium cardstock", p2_f2:"Soft matte finish", p2_f3:"Beautifully designed box", p2_f4:"Digital PDF included free",
+    p2_btn:"I want the physical deck",
+    pricing_guarantee:"✦ Love guarantee: if you don't love it, we'll refund you within 30 days ✦",
+    testi_label:"families who already planted light", testi_h2:"What parents are saying",
+    t1_text:"\"My 5-year-old asks for her card every morning before school. It's become part of our routine and I can see how her confidence has grown.\"",
+    t1_role:"Mom of Emma, 5 years · Madrid",
+    t2_text:"\"We bought the physical deck and it's beautiful. My autistic son uses them every day — they've been an incredible tool.\"",
+    t2_role:"Mom of Marcos, 6 years · Buenos Aires",
+    t3_text:"\"I printed them at home and they're just as beautiful. The bedtime tantrums almost completely disappeared. I can't believe the change.\"",
+    t3_role:"Mom of Simón, 4 years · Mexico City",
+    faq_label:"frequently asked questions", faq_h2:"Everything you want to know",
+    faq1_q:"What ages are the cards for?", faq1_a:"The cards are designed especially for children ages 3 to 7, though many families use them with children up to 9–10 years old with excellent results.",
+    faq2_q:"Do I need a high-quality printer?", faq2_a:"Not necessarily. The PDF is optimized to look beautiful even on standard home printers. You can also take it to any print shop.",
+    faq3_q:"How much time per day does it take?", faq3_a:"Just 5 minutes a day is enough to start seeing changes. Many families choose a card in the morning or as a bedtime ritual.",
+    faq4_q:"Can they be given as a gift?", faq4_a:"They're one of the most special gifts you can give. The physical version comes in a beautiful box ready to gift.",
+    cta_eyebrow:"start today", cta_h2:"Give your child<br>the tools they deserve",
+    cta_p:"You don't need to be perfect. You just need this 5-minute ritual and cards filled with love.",
+    cta_btn1:"✦ Get my deck", cta_btn2:"See the cards first",
+    footer_copy:"© 2025 Seeds of Light · Made with love for families everywhere",
+  }
+};
+
+let currentLang = 'es';
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = TRANSLATIONS[lang];
+
+  // Update all data-t elements
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.getAttribute('data-t');
+    if (t[key] !== undefined) {
+      el.innerHTML = t[key];
+    }
+  });
+
+  // Toggle button states
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.includes(lang.toUpperCase()));
+  });
+
+  // Update html lang attribute
+  document.documentElement.lang = lang;
+}
+
+// ── FAQ ───────────────────────────────────────────────────
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+// ── SCROLL REVEAL ─────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
+
+// ── NAV SHADOW ────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').style.boxShadow = window.scrollY > 50 ? '0 4px 30px rgba(60,50,40,.1)' : 'none';
+});
+</script>
 </body>
 </html>
