@@ -66,7 +66,8 @@ nav {
 
 /* HERO CARDS */
 .hero-cards { display:flex; gap:1.2rem; justify-content:center; flex-wrap:wrap; animation:fadeUp .8s .45s ease both; }
-.mini-card { width:110px; height:160px; border-radius:14px; box-shadow:0 8px 30px rgba(60,50,40,.1); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.4rem; padding:.8rem .5rem; transition:transform .3s; }
+.mini-card { width:110px; height:160px; border-radius:14px; box-shadow:0 8px 30px rgba(60,50,40,.1); overflow:hidden; transition:transform .3s; }
+.mini-card img { width:100%; height:100%; object-fit:cover; display:block; }
 .mini-card:hover { transform:translateY(-8px) rotate(-1deg); }
 .mini-card:nth-child(2) { transform:translateY(-15px) rotate(1.5deg); }
 .mc-blush { background:linear-gradient(160deg,#FFF5F2,#FFE8E0); }
@@ -255,36 +256,11 @@ footer p { font-size:.75rem; color:rgba(250,246,240,.3); letter-spacing:.08em; }
     <a href="/" class="btn-secondary" data-t="hero_cta2">Ver las cartas →</a>
   </div>
   <div class="hero-cards">
-    <div class="mini-card mc-blush">
-      <div class="card-label-mini" data-t="card1_label">Afirmación</div>
-      <div class="card-emoji">🦋</div>
-      <div class="card-text-mini" data-t="card1_text">Soy valiente y puedo lograrlo</div>
-      <div class="card-stars">✦ ✦ ✦</div>
-    </div>
-    <div class="mini-card mc-sage">
-      <div class="card-label-mini" data-t="card2_label">Calma</div>
-      <div class="card-emoji">🐢</div>
-      <div class="card-text-mini" data-t="card2_text">Respiro y encuentro mi paz</div>
-      <div class="card-stars">✦ ✦ ✦</div>
-    </div>
-    <div class="mini-card mc-lav">
-      <div class="card-label-mini" data-t="card3_label">Amor propio</div>
-      <div class="card-emoji">🌸</div>
-      <div class="card-text-mini" data-t="card3_text">Me quiero tal como soy</div>
-      <div class="card-stars">✦ ✦ ✦</div>
-    </div>
-    <div class="mini-card mc-gold">
-      <div class="card-label-mini" data-t="card4_label">Gratitud</div>
-      <div class="card-emoji">⭐</div>
-      <div class="card-text-mini" data-t="card4_text">Hoy doy gracias por...</div>
-      <div class="card-stars">✦ ✦ ✦</div>
-    </div>
-    <div class="mini-card mc-sky">
-      <div class="card-label-mini" data-t="card5_label">Mindfulness</div>
-      <div class="card-emoji">🌬️</div>
-      <div class="card-text-mini" data-t="card5_text">Siento el viento en mi cara</div>
-      <div class="card-stars">✦ ✦ ✦</div>
-    </div>
+    <div class="mini-card"><img src="/cards/card-bear.jpg" alt="Affirmation card - bear cub with golden star"></div>
+    <div class="mini-card"><img src="/cards/card-elephant.jpg" alt="Affirmation card - elephant and bunny"></div>
+    <div class="mini-card"><img src="/cards/card-bunnies.jpg" alt="Affirmation card - gentle bunnies"></div>
+    <div class="mini-card"><img src="/cards/card-fox.jpg" alt="Affirmation card - storybook fox"></div>
+    <div class="mini-card"><img src="/cards/card-dino.jpg" alt="Affirmation card - whimsical dinosaur"></div>
   </div>
 </section>
 
