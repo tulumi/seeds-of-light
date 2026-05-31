@@ -567,6 +567,16 @@ footer p { font-size: .75rem; color: rgba(250,246,240,.3); letter-spacing: .08em
 .reveal-delay-3 { transition-delay: .3s; }
 .reveal-delay-4 { transition-delay: .4s; }
 
+/* ─── LOCKED CARD ────────────────────────────────────────── */
+.deck-strip-locked {
+  background: linear-gradient(160deg, #F8F4EE, #F2EBE2) !important;
+  border: 1.5px dashed rgba(168,152,128,.35) !important;
+  box-shadow: none !important;
+  cursor: default !important;
+  opacity: .75;
+}
+.deck-strip-locked:hover { transform: none !important; }
+
 /* ─── PRODUCT SHOWCASE ───────────────────────────────────── */
 .showcase-grid {
   display: grid;

@@ -976,7 +976,7 @@ function Hero() {
         <div className="hero-left">
           <motion.div className="hero-pre" initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8}}>
             <span className="star star-sm" />
-            <span>40 cartas · diseño premium · edades 3–7</span>
+            <span>Para familias con niños de 3 a 7 años</span>
             <span className="star star-sm" />
           </motion.div>
 
@@ -985,23 +985,23 @@ function Hero() {
           </motion.h1>
 
           <motion.p className="hero-subtitle-script" initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.25}}>
-            Semillas de Confianza y Calma para tus hijos
+            5 minutos que cambian cómo se siente tu hijo
           </motion.p>
 
           <motion.p className="hero-desc" style={{margin:"0 0 2rem"}} initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.35}}>
-            Un mazo de 40 cartas diseñadas con amor para acompañar a niñas y niños de 3 a 7 años
-            a gestionar sus emociones, cultivar su autoestima y conectar con su calma interior.
+            Un ritual diario sencillo para que tu hijo crezca sintiéndose seguro, querido y capaz.
+            Sin métodos complejos — solo un momento especial entre tú y él, cada día.
           </motion.p>
 
           <motion.div className="hero-btns" style={{justifyContent:"flex-start"}} initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.45}}>
-            <a href="#pricing" className="btn-primary"><span className="star star-sm" />Quiero mi kit ahora</a>
-            <a href="#guia" className="btn-secondary">Ver el libro →</a>
+            <a href="#pricing" className="btn-primary"><span className="star star-sm" />Comenzar nuestro ritual</a>
+            <a href="#guia" className="btn-secondary">Ver el libro guía →</a>
           </motion.div>
 
           <motion.div className="hero-trust" initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.6}}>
-            <span>⭐ 4.9/5 de más de 1,200 familias</span>
+            <span>⭐ 4.9 · Más de 1,200 familias</span>
             <span className="trust-dot">·</span>
-            <span>Descarga instantánea</span>
+            <span>Listo en minutos</span>
             <span className="trust-dot">·</span>
             <span>Garantía 30 días</span>
           </motion.div>
@@ -1110,15 +1110,15 @@ function ProductShowcaseSection() {
 
         <motion.div className="showcase-copy reveal reveal-delay-2"
           initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.8,delay:.2}}>
-          <div className="section-tag"><span className="star star-sm"/>El producto en sus manos</div>
-          <h2 style={{marginBottom:"1.2rem"}}>Cartas que tus hijos pueden <em style={{color:"var(--blush-deep)"}}>tocar, leer y sentir</em></h2>
-          <p style={{color:"var(--mid)",marginBottom:"1.4rem"}}>Cada carta es un objeto de calidad premium — cartulina gruesa de 350g, esquinas redondeadas, colores suaves. Diseñadas para durar años en la vida de tu familia.</p>
+          <div className="section-tag"><span className="star star-sm"/>Diseñadas para ser suyas</div>
+          <h2 style={{marginBottom:"1.2rem"}}>Para que las <em style={{color:"var(--blush-deep)"}}>elijan, toquen y guarden</em> como un tesoro</h2>
+          <p style={{color:"var(--mid)",marginBottom:"1.4rem"}}>Cada carta es un objeto pensado para durar años — no un PDF olvidado en el móvil. Tu hijo las tendrá en sus manos, las elegirá, las sentirá suyas.</p>
           <ul className="showcase-list">
-            <li><span className="sc-dot" style={{background:"#F090A0"}}/>350g de cartulina mate premium</li>
-            <li><span className="sc-dot" style={{background:"#A8BFA8"}}/>Esquinas redondeadas, seguras para niños</li>
-            <li><span className="sc-dot" style={{background:"#D4A85C"}}/>Colores suaves, tipografía legible</li>
-            <li><span className="sc-dot" style={{background:"#C4B8D8"}}/>También disponible en PDF imprimible</li>
-            <li><span className="sc-dot" style={{background:"#60B8E0"}}/>40 cartas: 32 afirmaciones + 8 mindfulness</li>
+            <li><span className="sc-dot" style={{background:"#F090A0"}}/>Calidad de impresión premium, lista para regalar</li>
+            <li><span className="sc-dot" style={{background:"#A8BFA8"}}/>Tamaño perfecto para manos pequeñas</li>
+            <li><span className="sc-dot" style={{background:"#D4A85C"}}/>Ilustraciones suaves — sin estimulación excesiva</li>
+            <li><span className="sc-dot" style={{background:"#C4B8D8"}}/>También disponible en PDF para empezar hoy</li>
+            <li><span className="sc-dot" style={{background:"#60B8E0"}}/>32 palabras de confianza + 8 herramientas de calma</li>
           </ul>
         </motion.div>
       </div>
@@ -1212,8 +1212,8 @@ function SolutionSection() {
       <div className="section-inner">
         <div className="solution-header reveal">
           <span className="eyebrow">la solución</span>
-          <h2>Un ritual diario de 5 minutos<br/>que cambia todo</h2>
-          <p>Seeds of Light es un mazo de 40 cartas diseñadas para que toda la familia tenga un momento de conexión, calma y crecimiento emocional — cada día.</p>
+          <h2>Un ritual de 5 minutos<br/>que tu hijo recordará siempre</h2>
+          <p>Seeds of Light es un kit familiar diseñado para crear un momento de conexión, calma y confianza entre tú y tu hijo — cada día, sin esfuerzo.</p>
         </div>
         <div className="benefits-grid">
           {benefits.map((b, i) => (
@@ -1263,16 +1263,19 @@ function Card({ card, idx, onClick }) {
 
 
 // ── CARD STRIP ────────────────────────────────────────────────
-const STRIP_IDS = ["A01","A04","A08","A13","A20","A26","M01","M03","M05","M08"];
+const STRIP_IDS = ["A01","A04","A08","A13","A20","A26"];
 
 function CardStrip({ onSel }) {
   const cards = DECK.filter(c => STRIP_IDS.includes(c.id));
   return (
-    <section id="cartas" style={{padding:"3rem 0 2.5rem", background:"var(--cream)"}}>
-      <div style={{textAlign:"center",marginBottom:"1.6rem",padding:"0 1.5rem"}}>
-        <span className="label">Las cartas · muestra de 10</span>
-        <p style={{color:"var(--mid)",fontSize:".9rem",marginTop:".4rem"}}>
-          Haz clic en cualquier carta para verla en detalle. El kit completo incluye 40.
+    <section id="cartas" style={{padding:"3.5rem 0 3rem", background:"var(--cream)"}}>
+      <div style={{textAlign:"center",marginBottom:"2rem",padding:"0 1.5rem"}}>
+        <span className="label">Una muestra — 6 de 40</span>
+        <h2 style={{fontFamily:"var(--font-serif)",fontSize:"clamp(1.6rem,3.5vw,2.4rem)",marginTop:".5rem",marginBottom:".6rem"}}>
+          Palabras que construyen <em style={{color:"var(--blush-deep)"}}>confianza y seguridad</em>
+        </h2>
+        <p style={{color:"var(--mid)",fontSize:".95rem",maxWidth:460,margin:"0 auto"}}>
+          Toca cualquier carta para leerla. El kit completo incluye 40 — cada una, un momento diferente.
         </p>
       </div>
       <div className="deck-strip-wrap">
@@ -1295,9 +1298,31 @@ function CardStrip({ onSel }) {
               </div>
             );
           })}
+          {/* Locked cards */}
+          {[0,1].map(i => (
+            <div key={`lock-${i}`} className="deck-strip-card deck-strip-locked">
+              <div style={{display:"flex",justifyContent:"center",marginBottom:8}}>
+                <span style={{background:"rgba(120,100,80,.1)",color:"var(--soft)",fontSize:8,fontWeight:700,padding:"3px 10px",borderRadius:99,letterSpacing:"0.03em"}}>
+                  En el kit
+                </span>
+              </div>
+              <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:8}}>
+                <span style={{fontSize:"1.4rem",opacity:.35}}>🔒</span>
+                <p style={{fontFamily:"var(--font-sans)",fontSize:".68rem",color:"var(--soft)",textAlign:"center",letterSpacing:".04em"}}>
+                  Disponible con<br/>el kit completo
+                </p>
+              </div>
+              <p style={{fontFamily:"var(--font-serif)",fontStyle:"italic",fontSize:".7rem",color:"var(--soft)",textAlign:"center",lineHeight:1.3,marginTop:8,opacity:.5}}>
+                · · ·
+              </p>
+            </div>
+          ))}
         </div>
       </div>
-      <div style={{textAlign:"center",marginTop:"1.6rem"}}>
+      <div style={{textAlign:"center",marginTop:"2rem",display:"flex",flexDirection:"column",alignItems:"center",gap:".75rem"}}>
+        <p style={{fontSize:".8rem",color:"var(--soft)",letterSpacing:".06em"}}>
+          🔒 &nbsp;34 palabras más esperan en el kit completo
+        </p>
         <a href="#pricing" className="btn-primary" style={{display:"inline-flex"}}>
           <span className="star star-sm" />Ver el kit completo
         </a>
@@ -1376,10 +1401,10 @@ function GuiaSection() {
     <section id="guia" style={{padding:"5rem 0", background:"var(--cream-deep)"}}>
       <div className="section-inner">
         <div className="reveal" style={{textAlign:"center",marginBottom:"3rem"}}>
-          <span className="eyebrow">dentro del libro</span>
-          <h2>Una guía completa para acompañar cada carta</h2>
+          <span className="eyebrow">el libro guía</span>
+          <h2>Guía para acompañar emociones difíciles<br/>y fortalecer la conexión familiar</h2>
           <p style={{color:"var(--mid)",maxWidth:520,margin:".8rem auto 0"}}>
-            El libro incluye una página por carta con preguntas para conversar, actividades y contexto para los padres.
+            Cada página tiene preguntas para conversar juntos, actividades de conexión y orientación para ti como madre o padre.
           </p>
         </div>
 
@@ -1392,10 +1417,10 @@ function GuiaSection() {
         <div style={{textAlign:"center",marginTop:"2.5rem",display:"flex",flexDirection:"column",alignItems:"center",gap:"1rem"}}>
           <p style={{display:"flex",alignItems:"center",gap:".5rem",color:"var(--mid)",fontSize:".9rem"}}>
             <Ico name="openBook" size={18} color="var(--soft)" />
-            <span>40 páginas más incluidas con tu kit · todas bloqueadas hasta la compra</span>
+            <span>🔒 &nbsp;El libro completo — incluido en tu kit</span>
           </p>
           <a href="#pricing" className="btn-primary">
-            <span className="star star-sm" />Desbloquear el libro completo
+            <span className="star star-sm" />Incluir el libro en mi kit
           </a>
         </div>
       </div>
@@ -1415,10 +1440,10 @@ function MomentosSection() {
     <section id="momentos" style={{padding:"5rem 0",background:"var(--cream-deep)"}}>
       <div className="section-inner">
         <div className="reveal" style={{textAlign:"center",marginBottom:"3rem"}}>
-          <span className="eyebrow">imagina este momento</span>
-          <h2>Las cartas funcionan en cualquier parte de tu día</h2>
+          <span className="eyebrow">un momento especial</span>
+          <h2>En cualquier parte de tu día,<br/>hay espacio para <em style={{color:"var(--blush-deep)"}}>conectar</em></h2>
           <p style={{color:"var(--mid)",maxWidth:520,margin:".8rem auto 0"}}>
-            No necesitas un ritual complicado. Solo necesitas un momento. Y una carta.
+            No necesitas un ritual complicado. Solo necesitas un momento — y una palabra que llegue al corazón.
           </p>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:"1.5rem"}}>
@@ -1438,31 +1463,31 @@ function MomentosSection() {
 // ── APRENDE ───────────────────────────────────────────────────
 function AprenderSection() {
   const child = [
-    "Identificar y nombrar sus emociones",
-    "Expresar lo que siente con palabras",
-    "Calmarse cuando está frustrado o asustado",
-    "Construir autoestima desde adentro",
-    "Practicar gratitud cada día",
-    "Crear hábitos emocionales positivos",
+    "Sentirse seguro y querido — todos los días",
+    "Encontrar palabras para lo que siente",
+    "Calmarse cuando está desbordado o asustado",
+    "Crecer con una autoestima construida desde adentro",
+    "Aprender a agradecer — y disfrutar más",
+    "Tener herramientas propias para sus emociones",
   ];
   const mama = [
-    "Tendrás herramientas cuando no sepas qué decir",
-    "Crearás momentos de conexión reales, no forzados",
-    "Reducirás las luchas emocionales del día a día",
-    "Tendrás actividades listas para usar en segundos",
-    "Te sentirás más seguro/a acompañando sus emociones",
-    "Construirás un vínculo que dura toda la vida",
+    "Saber qué decirle cuando no encuentras las palabras",
+    "Momentos de conexión real — sin esfuerzo ni planificación",
+    "Menos tensión emocional en el día a día",
+    "Actividades listas en segundos, para cualquier momento",
+    "Más seguridad acompañando sus emociones difíciles",
+    "Un vínculo más profundo que dura toda su vida",
   ];
   return (
     <section id="aprende" style={{padding:"5rem 0"}}>
       <div className="section-inner">
         <div className="reveal" style={{textAlign:"center",marginBottom:"3rem"}}>
           <span className="eyebrow">lo que cambia</span>
-          <h2>Para tu hijo o hija, y para ti</h2>
+          <h2>Lo que gana tu hijo. Lo que ganas tú.</h2>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))",gap:"2.5rem"}}>
           <div className="reveal reveal-delay-1">
-            <h3 style={{fontSize:"1.4rem",marginBottom:"1.2rem",color:"var(--blush-deep)"}}>¿Qué aprenderán tus hijos?</h3>
+            <h3 style={{fontSize:"1.4rem",marginBottom:"1.2rem",color:"var(--blush-deep)"}}>Tu hijo gana cada día</h3>
             <ul style={{listStyle:"none",display:"flex",flexDirection:"column",gap:".8rem"}}>
               {child.map((item, i) => (
                 <li key={i} style={{display:"flex",gap:".75rem",alignItems:"flex-start",fontSize:".92rem",color:"var(--dark)"}}>
@@ -1473,7 +1498,7 @@ function AprenderSection() {
             </ul>
           </div>
           <div className="reveal reveal-delay-2">
-            <h3 style={{fontSize:"1.4rem",marginBottom:"1.2rem",color:"var(--sage)"}}>¿Qué cambia para ti?</h3>
+            <h3 style={{fontSize:"1.4rem",marginBottom:"1.2rem",color:"var(--sage)"}}>Tú como familia ganas</h3>
             <ul style={{listStyle:"none",display:"flex",flexDirection:"column",gap:".8rem"}}>
               {mama.map((item, i) => (
                 <li key={i} style={{display:"flex",gap:".75rem",alignItems:"flex-start",fontSize:".92rem",color:"var(--dark)"}}>
@@ -1534,10 +1559,10 @@ function HowSection() {
 // ── PRICING ───────────────────────────────────────────────────
 function KitContents({ includePhysical }) {
   const digital = [
-    { icon:"cardDeck",   icoColor:"#7A5A30", label:"40 cartas emocionales", sub:"Afirmaciones + mindfulness en PDF" },
-    { icon:"openBook",   icoColor:"#6A7A50", label:"Libro guía para familias", sub:"Cómo usar las cartas en cada etapa" },
-    { icon:"papers",     icoColor:"#507090", label:"Actividades imprimibles",sub:"Hojas de trabajo para explorar emociones" },
-    { icon:"moonRitual", icoColor:"#706090", label:"Rutina de 5 minutos",    sub:"Ritual nocturno antes de dormir (PDF)" },
+    { icon:"cardDeck",   icoColor:"#7A5A30", label:"Kit de conexión familiar",  sub:"40 palabras que construyen confianza y calma" },
+    { icon:"openBook",   icoColor:"#6A7A50", label:"Libro guía completo",        sub:"Para acompañar emociones difíciles juntos" },
+    { icon:"papers",     icoColor:"#507090", label:"Hojas de actividades",       sub:"Para explorar sentimientos en familia" },
+    { icon:"moonRitual", icoColor:"#706090", label:"Ritual nocturno guiado",     sub:"Un momento de calma antes de dormir" },
   ];
   return (
     <ul className="price-features" style={{gap:".95rem"}}>
@@ -1562,9 +1587,9 @@ function PricingSection() {
     <section id="pricing">
       <div className="section-inner">
         <div className="pricing-header reveal">
-          <span className="label">kit emocional completo</span>
-          <h2>Todo lo que recibe tu familia</h2>
-          <p>No son solo cartas. Es un sistema completo para acompañar las emociones de tus hijos.</p>
+          <span className="label">lo que recibe tu familia</span>
+          <h2>Un kit pensado para crear<br/>un ritual que dure años</h2>
+          <p>No es un PDF que olvidarás. Es una experiencia familiar diseñada para usarse cada día, en cada etapa de la infancia.</p>
         </div>
         <div className="pricing-grid">
           <div className="price-card reveal reveal-delay-1">
@@ -1572,15 +1597,15 @@ function PricingSection() {
             <h3>Kit Completo Digital</h3>
             <div className="price-amount"><span>$</span>14<span style={{fontSize:".9rem",opacity:.5}}>.99</span></div>
             <KitContents includePhysical={false} />
-            <a href="#" className="btn-price btn-price-dark">Descargar mi kit ahora</a>
+            <a href="#" className="btn-price btn-price-dark">Comenzar nuestro ritual</a>
           </div>
           <div className="price-card featured reveal reveal-delay-2">
-            <div className="price-badge">✦ Más amado</div>
+            <div className="price-badge">✦ El más elegido</div>
             <div className="price-type">kit físico + digital</div>
             <h3>Kit Premium Completo</h3>
             <div className="price-amount"><span>$</span>38<span style={{fontSize:".9rem",opacity:.5}}>.99</span></div>
             <KitContents includePhysical={true} />
-            <a href="#" className="btn-price btn-price-light">Quiero el kit físico</a>
+            <a href="#" className="btn-price btn-price-light">Quiero el kit para mi familia</a>
           </div>
         </div>
         <p style={{textAlign:"center",marginTop:"1.5rem",fontSize:".8rem",color:"var(--soft)"}}>
@@ -1594,16 +1619,16 @@ function PricingSection() {
 // ── TESTIMONIALS ──────────────────────────────────────────────
 function TestimonialsSection() {
   const list = [
-    { stars:"★★★★★", text:'"Mi hija de 5 años pide su carta cada mañana antes de ir al colegio. Se ha vuelto parte de nuestra rutina y noto cómo ha crecido su seguridad. Es el mejor recurso que he encontrado."', avatar:"🌸", bg:"rgba(232,196,184,.3)", name:"Ana Belén R.", role:"Mamá de Emma, 5 años · Madrid" },
-    { stars:"★★★★★", text:'"Compramos el mazo físico y es precioso. Las cartas son de muy buena calidad. Mi hijo autista las usa todos los días y han sido una herramienta increíble."', avatar:"🌿", bg:"rgba(168,191,168,.3)", name:"Carla M.", role:"Mamá de Marcos, 6 años · Buenos Aires" },
-    { stars:"★★★★★", text:'"Las imprimí en casa y son igual de bonitas. Hice un ritual nocturno con mi hijo y las rabietas antes de dormir desaparecieron casi por completo. No puedo creer el cambio."', avatar:"💫", bg:"rgba(196,184,216,.3)", name:"Valeria T.", role:"Mamá de Simón, 4 años · Ciudad de México" },
+    { stars:"★★★★★", text:'"Mi hija de 5 años pide su carta cada mañana antes de ir al colegio. Noto cómo ha crecido su seguridad. No sabía que un ritual tan sencillo pudiera cambiar tanto el ambiente en casa."', initials:"AB", color:"#E8C4B8", name:"Ana Belén R.", role:"Mamá de Emma, 5 años · Madrid" },
+    { stars:"★★★★★", text:'"El kit físico es precioso — digno de regalo. Mi hijo lo tiene en su mesita y lo elige solo. Ha sido la herramienta más cálida que encontré para acompañar sus emociones."', initials:"CM", color:"#C6DEC8", name:"Carla M.", role:"Mamá de Marcos, 6 años · Buenos Aires" },
+    { stars:"★★★★★", text:'"Lo usamos como ritual nocturno y las noches difíciles se transformaron. Mi hijo ya sabe buscar su carta cuando se siente mal. No puedo explicar el alivio que eso me da."', initials:"VT", color:"#C8C0DC", name:"Valeria T.", role:"Mamá de Simón, 4 años · Ciudad de México" },
   ];
   return (
     <section id="testimonials">
       <div className="section-inner">
         <div className="testimonials-header reveal">
-          <span className="label">familias que ya sembraron luz</span>
-          <h2>Lo que dicen las familias</h2>
+          <span className="label">familias que ya lo viven</span>
+          <h2>Lo que sienten las familias<br/>que ya lo tienen</h2>
         </div>
         <div className="testimonials-grid">
           {list.map((t, i) => (
@@ -1611,7 +1636,7 @@ function TestimonialsSection() {
               <div className="testi-stars">{t.stars}</div>
               <p className="testi-text">{t.text}</p>
               <div className="testi-author">
-                <div className="testi-avatar" style={{background:t.bg}}>{t.avatar}</div>
+                <div className="testi-avatar" style={{background:t.color,color:"rgba(60,50,40,.7)",fontFamily:"var(--font-sans)",fontWeight:600,fontSize:".75rem",letterSpacing:".04em"}}>{t.initials}</div>
                 <div><div className="testi-name">{t.name}</div><div className="testi-role">{t.role}</div></div>
               </div>
             </div>
@@ -1665,15 +1690,15 @@ function CTASection() {
           <span className="star star-lg" style={{color:"rgba(250,246,240,.5)"}} />
           <span className="star star-md" style={{color:"rgba(250,246,240,.3)"}} />
         </div>
-        <span className="eyebrow">empieza hoy</span>
-        <h2>Dale a tu hijo o hija<br/>las herramientas que merece</h2>
-        <p>No hay fórmula perfecta. Solo necesitas este pequeño ritual de 5 minutos y unas cartas llenas de amor.</p>
+        <span className="eyebrow">un regalo para tu familia</span>
+        <h2>El momento de conexión<br/>que tu hijo está esperando</h2>
+        <p>No necesitas ser perfecto como madre o padre. Solo necesitas este pequeño momento — y Seeds of Light hace el resto.</p>
         <div className="hero-btns">
           <a href="#pricing" className="btn-primary" style={{background:"var(--cream)",color:"var(--dark)"}}>
-            <span style={{color:"var(--gold)"}}>✦</span>Conseguir mi mazo
+            <span style={{color:"var(--gold)"}}>✦</span>Comenzar nuestro ritual
           </a>
           <a href="#guia" className="btn-secondary" style={{borderColor:"rgba(250,246,240,.3)",color:"rgba(250,246,240,.7)"}}>
-            Ver el libro
+            Ver el libro guía
           </a>
         </div>
       </div>
@@ -1740,11 +1765,10 @@ export default function App() {
 
   return (
     <>
-      <div className="top-banner">✦ &nbsp; Kit completo: cartas + libro guía + actividades &nbsp; ✦ &nbsp; Descarga instantánea &nbsp; ✦</div>
+      <div className="top-banner">✦ &nbsp; Kit familiar completo · palabras que construyen confianza &nbsp; ✦ &nbsp; Listo en minutos &nbsp; ✦</div>
       <Nav />
       <Hero />
       <CardStrip onSel={setSel} />
-      <ProductShowcaseSection />
       <ProblemSection />
       <SolutionSection />
       <GuiaSection />
@@ -1753,6 +1777,7 @@ export default function App() {
       <HowSection />
       <PricingSection />
       <TestimonialsSection />
+      <ProductShowcaseSection />
       <FAQSection />
       <CTASection />
       <Footer />
