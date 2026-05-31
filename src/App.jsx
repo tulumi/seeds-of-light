@@ -812,76 +812,84 @@ function Nav() {
 
 // ── DECK BOX MOCKUP ───────────────────────────────────────────
 function BoxFrontFace() {
+  // 3 real cards fanned on the cover
+  const coverCards = [
+    { card: DECK[0],  angle:-16, tx:-52, ty:12, z:1, bg:"linear-gradient(150deg,#FFF5F2,#FFE8E0)" },
+    { card: DECK[7],  angle:  0, tx:  0, ty:-6, z:3, bg:"white" },
+    { card: DECK[11], angle: 16, tx: 52, ty:12, z:2, bg:"linear-gradient(150deg,#F2F8F2,#E0EEE0)" },
+  ];
+
   return (
-    <div style={{width:"100%",height:"100%",position:"relative",display:"flex",flexDirection:"column",alignItems:"center",padding:"18px 14px 14px"}}>
-      {/* Inner gold frame */}
-      <div style={{position:"absolute",inset:7,border:"1.5px solid rgba(212,168,92,.45)",borderRadius:4,pointerEvents:"none"}} />
+    <div style={{width:"100%",height:"100%",display:"flex",flexDirection:"column",overflow:"hidden",background:"linear-gradient(160deg,#FBF7F2,#F5EDD5)"}}>
 
-      {/* Brand eyebrow */}
-      <div style={{fontFamily:"var(--font-sans)",fontSize:"0.42rem",letterSpacing:"0.22em",textTransform:"uppercase",color:"rgba(212,168,92,.95)",marginBottom:5,fontWeight:600}}>✦ Seeds of Light ✦</div>
-
-      {/* Main title */}
-      <div style={{fontFamily:"var(--font-serif)",fontSize:"1.18rem",color:"#3C3228",textAlign:"center",lineHeight:1.15,marginBottom:3}}>
-        Cartas de <em style={{color:"#D4A090",fontStyle:"italic"}}>Afirmación</em>
-      </div>
-      <div style={{fontFamily:"var(--font-script)",fontSize:"0.6rem",color:"#A8BFA8",marginBottom:10,textAlign:"center",letterSpacing:"0.05em"}}>Semillas de Luz</div>
-
-      {/* Illustration */}
-      <div style={{flex:1,width:"100%",display:"flex",alignItems:"center",justifyContent:"center",minHeight:110,position:"relative"}}>
-        <svg viewBox="0 0 200 155" style={{width:"100%",height:"auto"}}>
-          {/* Soft glow */}
-          <ellipse cx="100" cy="75" rx="55" ry="45" fill="#FFF3D0" opacity="0.6"/>
-          {/* Sun */}
-          {[0,40,80,120,160,200,240,280,320].map(a=>(
-            <line key={a}
-              x1={100+35*Math.cos(a*Math.PI/180)} y1={68+35*Math.sin(a*Math.PI/180)}
-              x2={100+46*Math.cos(a*Math.PI/180)} y2={68+46*Math.sin(a*Math.PI/180)}
-              stroke="#F0C860" strokeWidth="2.2" strokeLinecap="round" opacity="0.7"/>
-          ))}
-          <circle cx="100" cy="68" r="25" fill="#FADA6A" opacity="0.92"/>
-          <circle cx="100" cy="68" r="17" fill="#FEE98A"/>
-          <circle cx="93" cy="62" r="2.5" fill="rgba(255,255,255,.5)"/>
-          {/* Left branch */}
-          <path d="M42 145 C42 125 28 105 34 82" stroke="#8BA870" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.7"/>
-          <path d="M34 100 C22 92 18 78 26 68" stroke="#8BA870" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.6"/>
-          <path d="M34 100 C46 90 44 76 36 66" fill="#A8BFA8" opacity="0.75" stroke="none"/>
-          <path d="M42 122 C30 116 24 102 30 90" fill="#B8CFA8" opacity="0.65" stroke="none"/>
-          {/* Right branch */}
-          <path d="M158 145 C158 125 172 105 166 82" stroke="#8BA870" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.7"/>
-          <path d="M166 100 C178 92 182 78 174 68" stroke="#8BA870" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.6"/>
-          <path d="M166 100 C154 90 156 76 164 66" fill="#A8BFA8" opacity="0.75" stroke="none"/>
-          <path d="M158 122 C170 116 176 102 170 90" fill="#B8CFA8" opacity="0.65" stroke="none"/>
-          {/* Stars */}
-          <text x="24" y="50" fontSize="11" fill="#D4A85C" opacity="0.85">✦</text>
-          <text x="162" y="44" fontSize="9" fill="#D4A85C" opacity="0.7">✦</text>
-          <text x="175" y="105" fontSize="7" fill="#D4A85C" opacity="0.5">✦</text>
-          <text x="16" y="108" fontSize="7" fill="#D4A85C" opacity="0.5">✦</text>
-          <text x="95" y="28" fontSize="7" fill="#D4A85C" opacity="0.55">✦</text>
-          {/* Flowers */}
-          {[[58,112,"#F090A0"],[142,118,"#E8C87C"],[100,138,"#C4B8D8"],[70,95,"#F4B8C0"],[130,92,"#A8D4C0"]].map(([x,y,c],i)=>(
-            <g key={i}>
-              <circle cx={x} cy={y} r={4.5} fill={c} opacity="0.82"/>
-              <circle cx={x} cy={y} r={2} fill="rgba(255,255,255,.75)"/>
-            </g>
-          ))}
-          {/* Ground line */}
-          <line x1="15" y1="145" x2="185" y2="145" stroke="#C0A870" strokeWidth="0.8" opacity="0.3"/>
-          {/* Small butterflies */}
-          <path d="M72 58 C68 52 62 50 62 55 C62 59 68 60 72 58Z" fill="#F4C0D0" opacity="0.7"/>
-          <path d="M72 58 C76 52 82 50 82 55 C82 59 76 60 72 58Z" fill="#F4C0D0" opacity="0.7"/>
-          <path d="M128 52 C124 46 118 44 118 49 C118 53 124 54 128 52Z" fill="#C8D8F0" opacity="0.65"/>
-          <path d="M128 52 C132 46 138 44 138 49 C138 53 132 54 128 52Z" fill="#C8D8F0" opacity="0.65"/>
-        </svg>
+      {/* Gold header strip */}
+      <div style={{
+        background:"linear-gradient(135deg,#EAC068,#C89040)",
+        padding:"8px 14px 7px",
+        display:"flex",alignItems:"center",justifyContent:"space-between",
+        flexShrink:0,
+      }}>
+        <span style={{fontFamily:"var(--font-script)",fontSize:"0.75rem",color:"rgba(255,255,255,.95)",letterSpacing:"0.04em"}}>Seeds of Light</span>
+        <span style={{fontFamily:"var(--font-sans)",fontSize:"0.3rem",letterSpacing:"0.18em",color:"rgba(255,255,255,.75)",textTransform:"uppercase"}}>Semillas de Luz</span>
       </div>
 
-      {/* Product info */}
-      <div style={{fontFamily:"var(--font-sans)",fontSize:"0.4rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"#7A6A58",textAlign:"center",lineHeight:1.7,marginBottom:7}}>
-        40 Cartas · Español · Edades 3–7<br/>Afirmaciones · Mindfulness
+      {/* Inner gold frame line */}
+      <div style={{position:"absolute",inset:5,border:"1px solid rgba(212,168,92,.3)",borderRadius:5,pointerEvents:"none",zIndex:10}}/>
+
+      {/* Card fan — the product itself */}
+      <div style={{flex:1,position:"relative",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",padding:"8px 6px"}}>
+        {/* Soft warm glow */}
+        <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 70% 60% at 50% 55%,rgba(255,248,235,.9) 0%,transparent 70%)",pointerEvents:"none"}}/>
+
+        {/* Star decorations */}
+        <span style={{position:"absolute",top:14,left:18,color:"#D4A85C",fontSize:"0.6rem",opacity:.7}}>✦</span>
+        <span style={{position:"absolute",top:10,right:22,color:"#D4A85C",fontSize:"0.45rem",opacity:.55}}>✦</span>
+        <span style={{position:"absolute",bottom:20,left:28,color:"#D4A85C",fontSize:"0.4rem",opacity:.5}}>✦</span>
+        <span style={{position:"absolute",bottom:18,right:20,color:"#D4A85C",fontSize:"0.5rem",opacity:.5}}>✦</span>
+
+        {coverCards.map(({card,angle,tx,ty,z,bg},i) => {
+          const badge = BADGE_COLORS[card.n % BADGE_COLORS.length];
+          return (
+            <div key={card.id} style={{
+              position:"absolute",
+              width:96, height:134,
+              background:bg,
+              borderRadius:10,
+              border:"1px solid rgba(255,255,255,.95)",
+              boxShadow:`0 ${4+z*2}px ${14+z*6}px rgba(60,50,40,.${12+z*3})`,
+              transform:`rotate(${angle}deg) translateX(${tx}px) translateY(${ty}px)`,
+              display:"flex",flexDirection:"column",alignItems:"center",padding:"8px 6px 7px",gap:5,
+              zIndex:z,
+            }}>
+              <span style={{background:badge.bg,color:badge.text,fontSize:5.5,fontWeight:700,padding:"2px 7px",borderRadius:99,letterSpacing:"0.04em",textAlign:"center",whiteSpace:"nowrap"}}>{card.badge}</span>
+              <div style={{flex:1,width:"100%",display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>
+                <img src={card.img} alt={card.lines.join(" ")} style={{width:"78%",height:"auto",objectFit:"contain",display:"block"}}/>
+              </div>
+              <p style={{fontFamily:"var(--font-serif)",fontStyle:"italic",fontSize:"0.44rem",color:"#3C3228",textAlign:"center",lineHeight:1.3,margin:0}}>
+                {card.lines.join(" ")}
+              </p>
+            </div>
+          );
+        })}
       </div>
 
-      {/* Bottom badge */}
-      <div style={{background:"#3C3228",color:"#FAF6F0",fontSize:"0.36rem",letterSpacing:"0.14em",textTransform:"uppercase",padding:"4px 12px",borderRadius:20,fontFamily:"var(--font-sans)",fontWeight:600}}>
-        Kit Completo · Digital &amp; Física
+      {/* Bottom info bar */}
+      <div style={{
+        borderTop:"1px solid rgba(212,168,92,.25)",
+        background:"rgba(250,246,240,.95)",
+        padding:"8px 12px 11px",
+        display:"flex",flexDirection:"column",alignItems:"center",gap:5,
+        flexShrink:0,
+      }}>
+        <div style={{fontFamily:"var(--font-serif)",fontSize:"0.78rem",color:"#3C3228",lineHeight:1.2,textAlign:"center"}}>
+          Cartas de <em style={{color:"#D4A090"}}>Afirmación</em>
+        </div>
+        <div style={{fontFamily:"var(--font-sans)",fontSize:"0.34rem",color:"#A89880",letterSpacing:"0.14em",textTransform:"uppercase",textAlign:"center"}}>
+          40 cartas · Español · Edades 3–7
+        </div>
+        <div style={{background:"#3C3228",color:"#FAF6F0",fontSize:"0.3rem",letterSpacing:"0.14em",textTransform:"uppercase",padding:"3px 11px",borderRadius:20,fontFamily:"var(--font-sans)",fontWeight:600}}>
+          Kit Completo · Digital &amp; Física
+        </div>
       </div>
     </div>
   );
@@ -1014,9 +1022,9 @@ function Hero() {
 
         {/* Floating cards — back layer */}
         <FloatCard card={DECK[3]}  cls="mc-blush" size={1.45} delay={.8}
-          style={{top:-20, left:-50, transform:"rotate(-16deg)", zIndex:1}} />
-        <FloatCard card={DECK[30]} cls="mc-lav"   size={1.2}  delay={1.4}
-          style={{bottom:30, left:-20, transform:"rotate(10deg)", zIndex:1}} />
+          style={{top:-10, left:-30, transform:"rotate(-16deg)", zIndex:1}} />
+        <FloatCard card={DECK[19]} cls="mc-lav"   size={1.2}  delay={1.4}
+          style={{bottom:20, left:-10, transform:"rotate(10deg)", zIndex:1}} />
 
         {/* Main box */}
         <div style={{position:"relative",zIndex:3}}>
@@ -1024,10 +1032,10 @@ function Hero() {
         </div>
 
         {/* Floating cards — front layer */}
-        <FloatCard card={DECK[5]}  cls="mc-sage" size={1.35} delay={1.0}
-          style={{top:10,  right:-55, transform:"rotate(14deg)",  zIndex:4}} />
-        <FloatCard card={DECK[33]} cls="mc-sky"  size={1.15} delay={1.6}
-          style={{bottom:15, right:-20, transform:"rotate(-8deg)", zIndex:4}} />
+        <FloatCard card={DECK[12]} cls="mc-sage" size={1.35} delay={1.0}
+          style={{top:10, right:-40, transform:"rotate(14deg)", zIndex:4}} />
+        <FloatCard card={DECK[24]} cls="mc-sky"  size={1.15} delay={1.6}
+          style={{bottom:15, right:-10, transform:"rotate(-8deg)", zIndex:4}} />
       </motion.div>
 
       {/* ── Description + CTAs ── */}
