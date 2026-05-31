@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// ── COLORS ──────────────────────────────────────────────────
 const C = {
   bg:"#F5EDD5", border:"#E09020", text:"#D07010", brown:"#5C3A10",
   green:"#48A030", sky:"#60B8E0", coral:"#F06050", pink:"#F090A0",
@@ -17,8 +18,176 @@ const BADGE_COLORS = [
   { bg:"#B8E0D8", text:"#286858" },
 ];
 
-// ── SVG ILLUSTRATIONS ────────────────────────────────────
-const SVG = {
+// ── CARD IMAGE ───────────────────────────────────────────────
+function CardImg({ src, size = "100%" }) {
+  return <img src={src} alt="" style={{ width: size, height: "auto", objectFit: "contain", display: "block" }} />;
+}
+
+// ── CUSTOM ICONS ─────────────────────────────────────────────
+function Ico({ name, size = 28, color }) {
+  const s = { width: size, height: size, display: "block", flexShrink: 0 };
+  const sw = 1.6; // strokeWidth
+  const col = color || "currentColor";
+
+  const icons = {
+    // Problem section
+    burst: (
+      <svg viewBox="0 0 28 28" fill="none" style={s}>
+        <path d="M14 4 L15.8 10.2 L22 8 L18.2 13.4 L24 16 L17.8 17 L19 23.4 L14 19.6 L9 23.4 L10.2 17 L4 16 L9.8 13.4 L6 8 L12.2 10.2 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round" fill="none"/>
+        <circle cx="14" cy="14" r="3" stroke={col} strokeWidth={sw} fill="none"/>
+      </svg>
+    ),
+    moonCloud: (
+      <svg viewBox="0 0 28 28" fill="none" style={s}>
+        <path d="M17 7 C14.8 7 12.9 8.2 12 10 C11.4 9.8 10.7 9.7 10 9.7 C7.2 9.7 5 11.9 5 14.7 C5 17.5 7.2 19.7 10 19.7 L20 19.7 C22.2 19.7 24 17.9 24 15.7 C24 13.5 22.2 11.7 20 11.7 C19.8 11.7 19.6 11.7 19.4 11.8 C19.1 9.1 17.2 7 17 7 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <path d="M8 8 C9.5 5.5 12 4 14.5 4.2" stroke={col} strokeWidth={sw} strokeLinecap="round"/>
+      </svg>
+    ),
+    speechX: (
+      <svg viewBox="0 0 28 28" fill="none" style={s}>
+        <path d="M5 5 L23 5 L23 18 L16 18 L11 23 L11 18 L5 18 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <line x1="10" y1="9.5" x2="18" y2="13.5" stroke={col} strokeWidth={sw} strokeLinecap="round"/>
+        <line x1="18" y1="9.5" x2="10" y2="13.5" stroke={col} strokeWidth={sw} strokeLinecap="round"/>
+      </svg>
+    ),
+    moonZ: (
+      <svg viewBox="0 0 28 28" fill="none" style={s}>
+        <path d="M12 5 C8 6.5 5.5 10.3 5.5 14.5 C5.5 20 10 24 15.5 24 C18.5 24 21.2 22.7 23 20.5 C21.5 21 19.8 21.3 18 21 C13 20.2 9.5 15.8 9.5 10.8 C9.5 8.7 10.5 6.6 12 5 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <text x="17" y="12" fontSize="7" fill={col} fontFamily="var(--font-sans)" fontWeight="600">z</text>
+        <text x="20" y="8" fontSize="5" fill={col} fontFamily="var(--font-sans)" fontWeight="600">z</text>
+      </svg>
+    ),
+    // Benefit section
+    butterfly: (
+      <svg viewBox="0 0 28 28" fill="none" style={s}>
+        <path d="M14 14 C11 10 5 8 5 13 C5 17 9 18 14 14 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <path d="M14 14 C17 10 23 8 23 13 C23 17 19 18 14 14 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <path d="M14 14 C12 17 10 22 13 23 C15 23.5 15 20 14 14 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <path d="M14 14 C16 17 18 22 15 23 C13 23.5 13 20 14 14 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <ellipse cx="14" cy="14" rx="1.2" ry="5" stroke={col} strokeWidth="1.2"/>
+        <circle cx="13" cy="9.5" r="1" fill={col}/>
+        <circle cx="15" cy="9.5" r="1" fill={col}/>
+      </svg>
+    ),
+    leaf: (
+      <svg viewBox="0 0 28 28" fill="none" style={s}>
+        <path d="M8 22 C8 22 10 14 18 8 C22 6 25 6 25 6 C25 6 24 9 22 12 C18 18 10 22 8 22 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <path d="M8 22 L16 14" stroke={col} strokeWidth={sw} strokeLinecap="round"/>
+        <path d="M5 18 C5 18 6 14 8 12" stroke={col} strokeWidth={sw} strokeLinecap="round"/>
+      </svg>
+    ),
+    heartPair: (
+      <svg viewBox="0 0 28 28" fill="none" style={s}>
+        <path d="M10 9.5 C10 7.5 8 6 6.5 7.5 C5 9 6.5 11 10 13 C13.5 11 15 9 13.5 7.5 C12 6 10 7.5 10 9.5 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <path d="M18 11.5 C18 9.5 16 8 14.5 9.5 C13 11 14.5 13 18 15 C21.5 13 23 11 21.5 9.5 C20 8 18 9.5 18 11.5 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <path d="M10 13 Q14 19 18 15" stroke={col} strokeWidth="1.2" strokeLinecap="round" strokeDasharray="2 2"/>
+      </svg>
+    ),
+    heartFlower: (
+      <svg viewBox="0 0 28 28" fill="none" style={s}>
+        <path d="M14 20 C14 20 7 15 7 10.5 C7 8 9 6.5 11 7 C12.2 7.4 13.2 8.2 14 9.2 C14.8 8.2 15.8 7.4 17 7 C19 6.5 21 8 21 10.5 C21 15 14 20 14 20 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <circle cx="20" cy="6" r="1.5" stroke={col} strokeWidth="1.2"/>
+        <circle cx="24" cy="9" r="1.5" stroke={col} strokeWidth="1.2"/>
+        <circle cx="23" cy="4" r="1.5" stroke={col} strokeWidth="1.2"/>
+      </svg>
+    ),
+    starShine: (
+      <svg viewBox="0 0 28 28" fill="none" style={s}>
+        <path d="M14 4 L15.5 12.5 L24 14 L15.5 15.5 L14 24 L12.5 15.5 L4 14 L12.5 12.5 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <circle cx="14" cy="14" r="2.5" stroke={col} strokeWidth="1.2"/>
+      </svg>
+    ),
+    moonStar: (
+      <svg viewBox="0 0 28 28" fill="none" style={s}>
+        <path d="M11 6 C7.5 7.5 5 11 5 15 C5 20.5 9.5 25 15 25 C18.5 25 21.5 23.2 23.2 20.5 C21.8 21 20.2 21.3 18.5 21 C14 20.2 11 16.2 11 12 C11 9.8 11.8 7.7 13 6.3 C12.3 6.1 11.7 6 11 6 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <path d="M20 5 L20.8 7.2 L23 8 L20.8 8.8 L20 11 L19.2 8.8 L17 8 L19.2 7.2 Z" stroke={col} strokeWidth="1.2" strokeLinejoin="round"/>
+      </svg>
+    ),
+    // Kit contents
+    cardDeck: (
+      <svg viewBox="0 0 28 28" fill="none" style={s}>
+        <rect x="8" y="10" width="15" height="14" rx="2.5" stroke={col} strokeWidth={sw}/>
+        <rect x="6" y="7" width="15" height="14" rx="2.5" stroke={col} strokeWidth={sw}/>
+        <rect x="4" y="4" width="15" height="14" rx="2.5" stroke={col} strokeWidth={sw}/>
+        <path d="M7 8 L16 8" stroke={col} strokeWidth="1.2" strokeLinecap="round"/>
+      </svg>
+    ),
+    openBook: (
+      <svg viewBox="0 0 28 28" fill="none" style={s}>
+        <path d="M14 8 C14 8 11 6 5 7 L5 22 C11 21 14 22 14 22 C14 22 17 21 23 22 L23 7 C17 6 14 8 14 8 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <line x1="14" y1="8" x2="14" y2="22" stroke={col} strokeWidth={sw} strokeLinecap="round"/>
+        <line x1="8" y1="11" x2="12" y2="11" stroke={col} strokeWidth="1.2" strokeLinecap="round"/>
+        <line x1="8" y1="14" x2="12" y2="14" stroke={col} strokeWidth="1.2" strokeLinecap="round"/>
+        <line x1="16" y1="11" x2="20" y2="11" stroke={col} strokeWidth="1.2" strokeLinecap="round"/>
+        <line x1="16" y1="14" x2="20" y2="14" stroke={col} strokeWidth="1.2" strokeLinecap="round"/>
+      </svg>
+    ),
+    papers: (
+      <svg viewBox="0 0 28 28" fill="none" style={s}>
+        <rect x="8" y="5" width="14" height="18" rx="2" stroke={col} strokeWidth={sw}/>
+        <rect x="5" y="8" width="14" height="18" rx="2" stroke={col} strokeWidth={sw} fill="var(--cream)"/>
+        <line x1="8" y1="13" x2="16" y2="13" stroke={col} strokeWidth="1.2" strokeLinecap="round"/>
+        <line x1="8" y1="16" x2="16" y2="16" stroke={col} strokeWidth="1.2" strokeLinecap="round"/>
+        <line x1="8" y1="19" x2="13" y2="19" stroke={col} strokeWidth="1.2" strokeLinecap="round"/>
+      </svg>
+    ),
+    moonRitual: (
+      <svg viewBox="0 0 28 28" fill="none" style={s}>
+        <path d="M10 5.5 C6.5 7 4 10.5 4 14.5 C4 20 8.5 24.5 14 24.5 C17.5 24.5 20.5 22.7 22.2 20 C20.8 20.5 19.2 20.8 17.5 20.5 C13 19.7 10 15.7 10 11.5 C10 9.3 10.8 7.2 12 5.8 C11.3 5.6 10.6 5.5 10 5.5 Z" stroke={col} strokeWidth={sw} strokeLinejoin="round"/>
+        <path d="M19 4 L19.6 5.8 L21.4 6.4 L19.6 7 L19 8.8 L18.4 7 L16.6 6.4 L18.4 5.8 Z" stroke={col} strokeWidth="1.2" strokeLinejoin="round"/>
+        <path d="M23 10 L23.4 11.4 L24.8 11.8 L23.4 12.2 L23 13.6 L22.6 12.2 L21.2 11.8 L22.6 11.4 Z" stroke={col} strokeWidth="1" strokeLinejoin="round"/>
+      </svg>
+    ),
+    // Momentos
+    moonLg: (
+      <svg viewBox="0 0 48 48" fill="none" style={{...s, width:size, height:size}}>
+        <path d="M18 8 C11 11 6 18 6 26 C6 35.9 14.1 44 24 44 C30.5 44 36.2 40.5 39.5 35.2 C37 36.2 34.2 36.8 31.2 36.4 C22.5 35.1 16 27.4 16 18.5 C16 14.7 17.4 11.1 20 8.5 C19.3 8.2 18.7 8 18 8 Z" stroke={col} strokeWidth="2.2" strokeLinejoin="round"/>
+        <path d="M35 7 L36.2 10.8 L40 12 L36.2 13.2 L35 17 L33.8 13.2 L30 12 L33.8 10.8 Z" stroke={col} strokeWidth="1.8" strokeLinejoin="round"/>
+        <circle cx="40" cy="20" r="2" stroke={col} strokeWidth="1.4" fill="none"/>
+      </svg>
+    ),
+    carLg: (
+      <svg viewBox="0 0 48 48" fill="none" style={{...s, width:size, height:size}}>
+        <rect x="4" y="22" width="40" height="16" rx="4" stroke={col} strokeWidth="2.2"/>
+        <path d="M10 22 L14 12 L34 12 L38 22" stroke={col} strokeWidth="2.2" strokeLinejoin="round"/>
+        <circle cx="12" cy="38" r="5" stroke={col} strokeWidth="2.2"/>
+        <circle cx="36" cy="38" r="5" stroke={col} strokeWidth="2.2"/>
+        <rect x="16" y="14" width="8" height="8" rx="1.5" stroke={col} strokeWidth="1.4"/>
+        <rect x="26" y="14" width="8" height="8" rx="1.5" stroke={col} strokeWidth="1.4"/>
+        <line x1="38" y1="28" x2="44" y2="28" stroke={col} strokeWidth="1.8" strokeLinecap="round"/>
+      </svg>
+    ),
+    plateLg: (
+      <svg viewBox="0 0 48 48" fill="none" style={{...s, width:size, height:size}}>
+        <circle cx="24" cy="26" r="16" stroke={col} strokeWidth="2.2"/>
+        <circle cx="24" cy="26" r="11" stroke={col} strokeWidth="1.4"/>
+        <line x1="15" y1="8" x2="15" y2="18" stroke={col} strokeWidth="2" strokeLinecap="round"/>
+        <line x1="12" y1="8" x2="12" y2="18" stroke={col} strokeWidth="2" strokeLinecap="round"/>
+        <line x1="18" y1="8" x2="18" y2="18" stroke={col} strokeWidth="2" strokeLinecap="round"/>
+        <path d="M33 8 C33 8 36 10 36 13 C36 16 33 16 33 16 L33 42" stroke={col} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+    sunLg: (
+      <svg viewBox="0 0 48 48" fill="none" style={{...s, width:size, height:size}}>
+        {[0,45,90,135,180,225,270,315].map((a,i) => (
+          <line key={i}
+            x1={24 + 17*Math.cos(a*Math.PI/180)} y1={24 + 17*Math.sin(a*Math.PI/180)}
+            x2={24 + 23*Math.cos(a*Math.PI/180)} y2={24 + 23*Math.sin(a*Math.PI/180)}
+            stroke={col} strokeWidth="2.2" strokeLinecap="round"/>
+        ))}
+        <circle cx="24" cy="24" r="13" stroke={col} strokeWidth="2.2"/>
+        <circle cx="20" cy="22" r="2" stroke={col} strokeWidth="1.4"/>
+        <circle cx="28" cy="22" r="2" stroke={col} strokeWidth="1.4"/>
+        <path d="M19 28 Q24 33 29 28" stroke={col} strokeWidth="2" strokeLinecap="round" fill="none"/>
+      </svg>
+    ),
+  };
+  return icons[name] ?? null;
+}
+
+// ── (SVG illustrations removed — using real PNG illustrations) ─
+
+const _unused = {
   lion:(
     <svg viewBox="0 0 120 100" style={{overflow:"visible"}}>
       {[0,30,60,90,120,150,180,210,240,270,300,330].map((a,i)=>(
@@ -498,7 +667,6 @@ const SVG = {
       <ellipse cx="60" cy="38" rx="3" ry="8" fill="#5C3A10" stroke={C.brown} strokeWidth="1.5"/>
     </svg>
   ),
-  // ── NEW: mindfulness illustrations ──
   rainbow:(
     <svg viewBox="0 0 120 100">
       {[["#FF6B6B",52],["#FF9F43",44],["#FFD166",36],["#6BCB77",28],["#74B9FF",20],["#BFA2DB",12]].map(([color,r],i)=>(
@@ -550,125 +718,400 @@ const SVG = {
   ),
 };
 
-// ── DECK (40 cartas) ────────────────────────────────────
+// ── DECK (40 cartas) ─────────────────────────────────────────
 const DECK = [
-  // AFIRMACIONES (32)
-  {id:"A01",n:1, cat:"Afirmaciones", badge:"Afirmación del día",     svg:"bunny_love",      lines:["Soy amado","y valorado"]},
-  {id:"A02",n:2, cat:"Afirmaciones", badge:"Afirmación del día",     svg:"bear_hug",        lines:["Eres mi","lugar seguro"]},
-  {id:"A03",n:3, cat:"Afirmaciones", badge:"Afirmación del día",     svg:"smile_shine",     lines:["Mi sonrisa","ilumina el mundo"]},
-  {id:"A04",n:4, cat:"Afirmaciones", badge:"Afirmación del día",     svg:"sunflower",       lines:["Soy suficiente","tal como soy"]},
-  {id:"A05",n:5, cat:"Afirmaciones", badge:"Afirmación del día",     svg:"sun",             lines:["Hoy elijo","la felicidad"]},
-  {id:"A06",n:6, cat:"Afirmaciones", badge:"Afirmación del día",     svg:"turtle",          lines:["Respiro paz","y calma"]},
-  {id:"A07",n:7, cat:"Afirmaciones", badge:"Afirmación del día",     svg:"grateful_bear",   lines:["Doy gracias","por este día"]},
-  {id:"A08",n:8, cat:"Afirmaciones", badge:"Afirmación del día",     svg:"butterfly_flower",lines:["Mi corazón","es bondadoso"]},
-  {id:"A09",n:9, cat:"Afirmaciones", badge:"Afirmación del día",     svg:"lion",            lines:["Soy","valiente"]},
-  {id:"A10",n:10,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"bunny_idea",      lines:["Mis ideas","brillan"]},
-  {id:"A11",n:11,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"plant_heart",     lines:["Crezco","con amor"]},
-  {id:"A12",n:12,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"sunshine_ray",    lines:["Soy","luz"]},
-  {id:"A13",n:13,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"bird_sing",       lines:["Mi voz","importa"]},
-  {id:"A14",n:14,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"feelings",        lines:["Todo lo que siento","está bien"]},
-  {id:"A15",n:15,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"chick_fly",       lines:["Puedo volver","a intentar"]},
-  {id:"A16",n:16,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"gift",            lines:["Soy un","regalo"]},
-  {id:"A17",n:17,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"bear_star",       lines:["Confío","en mí"]},
-  {id:"A18",n:18,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"child_bunny",     lines:["Cuido los","animales"]},
-  {id:"A19",n:19,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"earth_hug",       lines:["Amo al","planeta"]},
-  {id:"A20",n:20,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"sharing",         lines:["Compartir","me hace feliz"]},
-  {id:"A21",n:21,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"parrot",          lines:["Hablo con","bondad"]},
-  {id:"A22",n:22,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"two_friends",     lines:["Soy un buen","amigo"]},
-  {id:"A23",n:23,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"elephant_listen", lines:["Escucho con","el corazón"]},
-  {id:"A24",n:24,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"sunflower_smile", lines:["Mi sonrisa","alegra"]},
-  {id:"A25",n:25,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"helping",         lines:["Ayudar","me hace bien"]},
-  {id:"A26",n:26,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"sunrise",         lines:["Agradezco","mi día"]},
-  {id:"A27",n:27,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"drawing",         lines:["Dibujo mis","emociones"]},
-  {id:"A28",n:28,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"memories",        lines:["Recuerdo cosas","bonitas"]},
-  {id:"A29",n:29,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"journal",         lines:["Escribo lo que","me alegra"]},
-  {id:"A30",n:30,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"emotions",        lines:["Nombro mi","emoción"]},
-  {id:"A31",n:31,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"butterfly_flower",lines:["Observo","la belleza"]},
-  {id:"A32",n:32,cat:"Afirmaciones", badge:"Afirmación del día",     svg:"bunny_love",      lines:["Me quiero","tal como soy"]},
-  // MINDFULNESS (8)
-  {id:"M01",n:33,cat:"Mindfulness",  badge:"Actividad de mindfulness",svg:"rainbow",        lines:["Cierra los ojos.", "Imagina un arcoíris","brillando en ti"]},
-  {id:"M02",n:34,cat:"Mindfulness",  badge:"Actividad de mindfulness",svg:"butterfly_flower",lines:["Busca 5 cosas","que te hagan feliz","y cuéntaselas a mamá"]},
-  {id:"M03",n:35,cat:"Mindfulness",  badge:"Actividad de mindfulness",svg:"breathing",      lines:["Respira profundo","3 veces, llenando","tu barriga"]},
-  {id:"M04",n:36,cat:"Mindfulness",  badge:"Actividad de mindfulness",svg:"bear_hug",       lines:["Abraza fuerte","a quien más amas"]},
-  {id:"M05",n:37,cat:"Mindfulness",  badge:"Actividad de mindfulness",svg:"sunshine_ray",   lines:["Mira al cielo","y cuenta","las nubes"]},
-  {id:"M06",n:38,cat:"Mindfulness",  badge:"Actividad de mindfulness",svg:"silence",        lines:["Pon la mano","en tu corazón","y siente latir"]},
-  {id:"M07",n:39,cat:"Mindfulness",  badge:"Actividad de mindfulness",svg:"drawing",        lines:["Dibuja cómo","te sientes","hoy"]},
-  {id:"M08",n:40,cat:"Mindfulness",  badge:"Actividad de mindfulness",svg:"tree",           lines:["Imagina raíces","bajo tus pies.","Eres fuerte"]},
+  {id:"A01",n:1, cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c01.png", lines:["Soy amado","y valorado"]},
+  {id:"A02",n:2, cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c02.png", lines:["Eres mi","lugar seguro"]},
+  {id:"A03",n:3, cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c03.png", lines:["Mi sonrisa","ilumina el mundo"]},
+  {id:"A04",n:4, cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c04.png", lines:["Soy suficiente","tal como soy"]},
+  {id:"A05",n:5, cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c05.png", lines:["Hoy elijo","la felicidad"]},
+  {id:"A06",n:6, cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c06.png", lines:["Respiro paz","y calma"]},
+  {id:"A07",n:7, cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c07.png", lines:["Doy gracias","por este día"]},
+  {id:"A08",n:8, cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c08.png", lines:["Mi corazón","es bondadoso"]},
+  {id:"A09",n:9, cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c09.png", lines:["Soy paciente","conmigo mismo"]},
+  {id:"A10",n:10,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c10.png", lines:["Mi voz","importa"]},
+  {id:"A11",n:11,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c11.png", lines:["Me encanta","aprender"]},
+  {id:"A12",n:12,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c12.png", lines:["Soy luz","y alegría"]},
+  {id:"A13",n:13,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c13.png", lines:["Soy","valiente"]},
+  {id:"A14",n:14,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c14.png", lines:["Soy creativo","y brillante"]},
+  {id:"A15",n:15,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c15.png", lines:["Puedo lograr","grandes cosas"]},
+  {id:"A16",n:16,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c16.png", lines:["Merezco amor","y alegría"]},
+  {id:"A17",n:17,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c17.png", lines:["Tengo un","corazón grande"]},
+  {id:"A18",n:18,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c18.png", lines:["Disfruto","cada momento"]},
+  {id:"A19",n:19,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c19.png", lines:["Todo","estará bien"]},
+  {id:"A20",n:20,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c20.png", lines:["Mi cuerpo es","fuerte y sano"]},
+  {id:"A21",n:21,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c21.png", lines:["Mi imaginación","es mágica"]},
+  {id:"A22",n:22,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c22.png", lines:["Brillo","desde adentro"]},
+  {id:"A23",n:23,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c23.png", lines:["Soy libre","de soñar"]},
+  {id:"A24",n:24,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c24.png", lines:["Respiro","profundo"]},
+  {id:"A25",n:25,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c25.png", lines:["Cuido a","la naturaleza"]},
+  {id:"A26",n:26,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c26.png", lines:["Soy feliz","siendo yo"]},
+  {id:"A27",n:27,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c27.png", lines:["Confío en","mi camino"]},
+  {id:"A28",n:28,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c28.png", lines:["Todo empieza","con amor"]},
+  {id:"A29",n:29,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c29.png", lines:["Compartir","es amar"]},
+  {id:"A30",n:30,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c30.png", lines:["Escucho a","mi corazón"]},
+  {id:"A31",n:31,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c31.png", lines:["Mi familia","es mi hogar"]},
+  {id:"A32",n:32,cat:"Afirmaciones",badge:"Afirmación del día",      img:"/cards/c32.png", lines:["Soy","especial"]},
+  {id:"M01",n:33,cat:"Mindfulness", badge:"Actividad de mindfulness",img:"/cards/c33.png", lines:["Cierra los ojos.","Imagina un arcoíris","brillando en ti"]},
+  {id:"M02",n:34,cat:"Mindfulness", badge:"Actividad de mindfulness",img:"/cards/c34.png", lines:["Busca 5 cosas","que te hagan feliz","y cuéntaselas a mamá"]},
+  {id:"M03",n:35,cat:"Mindfulness", badge:"Actividad de mindfulness",img:"/cards/c35.png", lines:["Respira profundo","3 veces, llenando","tu barriga"]},
+  {id:"M04",n:36,cat:"Mindfulness", badge:"Actividad de mindfulness",img:"/cards/c36.png", lines:["Abraza fuerte","a quien más amas"]},
+  {id:"M05",n:37,cat:"Mindfulness", badge:"Actividad de mindfulness",img:"/cards/c37.png", lines:["Mira al cielo","y cuenta","las nubes"]},
+  {id:"M06",n:38,cat:"Mindfulness", badge:"Actividad de mindfulness",img:"/cards/c38.png", lines:["Pon la mano","en tu corazón","y siente latir"]},
+  {id:"M07",n:39,cat:"Mindfulness", badge:"Actividad de mindfulness",img:"/cards/c39.png", lines:["Dibuja cómo","te sientes","hoy"]},
+  {id:"M08",n:40,cat:"Mindfulness", badge:"Actividad de mindfulness",img:"/cards/c40.png", lines:["Imagina raíces","bajo tus pies.","Eres fuerte"]},
 ];
 
 const TOTAL = DECK.length;
-const CATS = ["Todas","Afirmaciones","Mindfulness"];
+const CATS  = ["Todas", "Afirmaciones", "Mindfulness"];
 
-const CAT_TITLE = {
-  Todas: "Todas las cartas",
-  Afirmaciones: "Afirmaciones",
-  Mindfulness: "Actividades de mindfulness",
-};
+// ── FLOATING STARS ────────────────────────────────────────────
+function StarsBg() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const chars = ["✦","✧","★","✸","✺"];
+    for (let i = 0; i < 28; i++) {
+      const s = document.createElement("span");
+      s.textContent = chars[Math.floor(Math.random() * chars.length)];
+      s.style.left = Math.random() * 100 + "%";
+      s.style.top  = (20 + Math.random() * 70) + "%";
+      s.style.fontSize = (.28 + Math.random() * .5) + "rem";
+      s.style.animationDelay = (Math.random() * 8) + "s";
+      s.style.animationDuration = (5 + Math.random() * 6) + "s";
+      el.appendChild(s);
+    }
+  }, []);
+  return <div className="stars-bg" ref={ref} />;
+}
 
-// ── CARD ────────────────────────────────────────────────
+// ── NAV ───────────────────────────────────────────────────────
+function Nav() {
+  useEffect(() => {
+    const onScroll = () => {
+      const nav = document.querySelector("nav");
+      if (nav) nav.style.boxShadow = window.scrollY > 50 ? "0 4px 30px rgba(60,50,40,.1)" : "none";
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <nav>
+      <a className="nav-logo" href="#">Seeds of Light</a>
+      <ul className="nav-links">
+        <li><a href="#problem">El problema</a></li>
+        <li><a href="#guia">El libro</a></li>
+        <li><a href="#how">Cómo funciona</a></li>
+        <li><a href="#testimonials">Familias</a></li>
+        <li><a href="#pricing" className="nav-cta">Conseguir mi mazo</a></li>
+      </ul>
+    </nav>
+  );
+}
+
+// ── DECK BOX MOCKUP ───────────────────────────────────────────
+function BoxFrontFace() {
+  return (
+    <div style={{width:"100%",height:"100%",position:"relative",display:"flex",flexDirection:"column",alignItems:"center",padding:"18px 14px 14px"}}>
+      {/* Inner gold frame */}
+      <div style={{position:"absolute",inset:7,border:"1.5px solid rgba(212,168,92,.45)",borderRadius:4,pointerEvents:"none"}} />
+
+      {/* Brand eyebrow */}
+      <div style={{fontFamily:"var(--font-sans)",fontSize:"0.42rem",letterSpacing:"0.22em",textTransform:"uppercase",color:"rgba(212,168,92,.95)",marginBottom:5,fontWeight:600}}>✦ Seeds of Light ✦</div>
+
+      {/* Main title */}
+      <div style={{fontFamily:"var(--font-serif)",fontSize:"1.18rem",color:"#3C3228",textAlign:"center",lineHeight:1.15,marginBottom:3}}>
+        Cartas de <em style={{color:"#D4A090",fontStyle:"italic"}}>Afirmación</em>
+      </div>
+      <div style={{fontFamily:"var(--font-script)",fontSize:"0.6rem",color:"#A8BFA8",marginBottom:10,textAlign:"center",letterSpacing:"0.05em"}}>Semillas de Luz</div>
+
+      {/* Illustration */}
+      <div style={{flex:1,width:"100%",display:"flex",alignItems:"center",justifyContent:"center",minHeight:110,position:"relative"}}>
+        <svg viewBox="0 0 200 155" style={{width:"100%",height:"auto"}}>
+          {/* Soft glow */}
+          <ellipse cx="100" cy="75" rx="55" ry="45" fill="#FFF3D0" opacity="0.6"/>
+          {/* Sun */}
+          {[0,40,80,120,160,200,240,280,320].map(a=>(
+            <line key={a}
+              x1={100+35*Math.cos(a*Math.PI/180)} y1={68+35*Math.sin(a*Math.PI/180)}
+              x2={100+46*Math.cos(a*Math.PI/180)} y2={68+46*Math.sin(a*Math.PI/180)}
+              stroke="#F0C860" strokeWidth="2.2" strokeLinecap="round" opacity="0.7"/>
+          ))}
+          <circle cx="100" cy="68" r="25" fill="#FADA6A" opacity="0.92"/>
+          <circle cx="100" cy="68" r="17" fill="#FEE98A"/>
+          <circle cx="93" cy="62" r="2.5" fill="rgba(255,255,255,.5)"/>
+          {/* Left branch */}
+          <path d="M42 145 C42 125 28 105 34 82" stroke="#8BA870" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.7"/>
+          <path d="M34 100 C22 92 18 78 26 68" stroke="#8BA870" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.6"/>
+          <path d="M34 100 C46 90 44 76 36 66" fill="#A8BFA8" opacity="0.75" stroke="none"/>
+          <path d="M42 122 C30 116 24 102 30 90" fill="#B8CFA8" opacity="0.65" stroke="none"/>
+          {/* Right branch */}
+          <path d="M158 145 C158 125 172 105 166 82" stroke="#8BA870" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.7"/>
+          <path d="M166 100 C178 92 182 78 174 68" stroke="#8BA870" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.6"/>
+          <path d="M166 100 C154 90 156 76 164 66" fill="#A8BFA8" opacity="0.75" stroke="none"/>
+          <path d="M158 122 C170 116 176 102 170 90" fill="#B8CFA8" opacity="0.65" stroke="none"/>
+          {/* Stars */}
+          <text x="24" y="50" fontSize="11" fill="#D4A85C" opacity="0.85">✦</text>
+          <text x="162" y="44" fontSize="9" fill="#D4A85C" opacity="0.7">✦</text>
+          <text x="175" y="105" fontSize="7" fill="#D4A85C" opacity="0.5">✦</text>
+          <text x="16" y="108" fontSize="7" fill="#D4A85C" opacity="0.5">✦</text>
+          <text x="95" y="28" fontSize="7" fill="#D4A85C" opacity="0.55">✦</text>
+          {/* Flowers */}
+          {[[58,112,"#F090A0"],[142,118,"#E8C87C"],[100,138,"#C4B8D8"],[70,95,"#F4B8C0"],[130,92,"#A8D4C0"]].map(([x,y,c],i)=>(
+            <g key={i}>
+              <circle cx={x} cy={y} r={4.5} fill={c} opacity="0.82"/>
+              <circle cx={x} cy={y} r={2} fill="rgba(255,255,255,.75)"/>
+            </g>
+          ))}
+          {/* Ground line */}
+          <line x1="15" y1="145" x2="185" y2="145" stroke="#C0A870" strokeWidth="0.8" opacity="0.3"/>
+          {/* Small butterflies */}
+          <path d="M72 58 C68 52 62 50 62 55 C62 59 68 60 72 58Z" fill="#F4C0D0" opacity="0.7"/>
+          <path d="M72 58 C76 52 82 50 82 55 C82 59 76 60 72 58Z" fill="#F4C0D0" opacity="0.7"/>
+          <path d="M128 52 C124 46 118 44 118 49 C118 53 124 54 128 52Z" fill="#C8D8F0" opacity="0.65"/>
+          <path d="M128 52 C132 46 138 44 138 49 C138 53 132 54 128 52Z" fill="#C8D8F0" opacity="0.65"/>
+        </svg>
+      </div>
+
+      {/* Product info */}
+      <div style={{fontFamily:"var(--font-sans)",fontSize:"0.4rem",letterSpacing:"0.12em",textTransform:"uppercase",color:"#7A6A58",textAlign:"center",lineHeight:1.7,marginBottom:7}}>
+        40 Cartas · Español · Edades 3–7<br/>Afirmaciones · Mindfulness
+      </div>
+
+      {/* Bottom badge */}
+      <div style={{background:"#3C3228",color:"#FAF6F0",fontSize:"0.36rem",letterSpacing:"0.14em",textTransform:"uppercase",padding:"4px 12px",borderRadius:20,fontFamily:"var(--font-sans)",fontWeight:600}}>
+        Kit Completo · Digital &amp; Física
+      </div>
+    </div>
+  );
+}
+
+function DeckBoxMockup() {
+  // 2.5D cabinet-projection box — no CSS 3D needed, works everywhere
+  const W=220, H=295, DX=58, DY=28; // front W×H, depth offset DX right, DY up
+
+  return (
+    <motion.div
+      style={{position:"relative",width:W+DX,height:H+DY,flexShrink:0}}
+      animate={{y:[0,-14,0]}}
+      transition={{duration:4.5,repeat:Infinity,ease:"easeInOut"}}
+    >
+      {/* Drop shadow */}
+      <div style={{
+        position:"absolute",bottom:-20,left:DX/2,
+        width:W,height:18,
+        background:"radial-gradient(ellipse,rgba(60,50,40,.22) 0%,transparent 70%)",
+        filter:"blur(10px)",
+      }}/>
+
+      {/* TOP face — parallelogram */}
+      <div style={{
+        position:"absolute",top:0,left:0,
+        width:W+DX,height:DY,
+        background:"linear-gradient(to bottom right,#FFF9F4,#EFE4D0)",
+        clipPath:`polygon(${DX}px 0,${W+DX}px 0,${W}px ${DY}px,0 ${DY}px)`,
+        borderTop:"1px solid rgba(212,168,92,.35)",
+      }}/>
+
+      {/* RIGHT spine — parallelogram */}
+      <div style={{
+        position:"absolute",top:0,left:W,
+        width:DX,height:H+DY,
+        background:"linear-gradient(160deg,#EAC068 0%,#C89040 50%,#A87028 100%)",
+        clipPath:`polygon(0 ${DY}px,${DX}px 0,${DX}px ${H}px,0 ${H+DY}px)`,
+        display:"flex",alignItems:"center",justifyContent:"center",
+      }}>
+        <span style={{
+          writingMode:"vertical-rl",transform:"rotate(180deg) skewY(-10deg)",
+          fontFamily:"var(--font-serif)",fontSize:"0.72rem",
+          color:"rgba(255,255,255,.92)",letterSpacing:"0.14em",fontStyle:"italic",
+          marginTop:DY,
+        }}>Seeds of Light</span>
+      </div>
+
+      {/* FRONT face */}
+      <div style={{
+        position:"absolute",top:DY,left:0,
+        width:W,height:H,
+        background:"linear-gradient(150deg,#FBF7F1 0%,#F5EDD5 100%)",
+        border:"1px solid rgba(212,168,92,.35)",
+        borderRadius:"6px 0 0 6px",
+        overflow:"hidden",
+        boxShadow:"4px 8px 32px rgba(60,50,40,.13)",
+      }}>
+        <BoxFrontFace />
+      </div>
+    </motion.div>
+  );
+}
+
+// ── FLOATING CARD (around box) ────────────────────────────────
+function FloatCard({ card, style, cls, delay=0 }) {
+  return (
+    <motion.div
+      className={`mini-card ${cls}`}
+      style={{position:"absolute",...style}}
+      initial={{opacity:0,scale:0.8}}
+      animate={{opacity:1,scale:1,y:[0,-8,0]}}
+      transition={{opacity:{duration:.6,delay},scale:{duration:.6,delay},y:{duration:3.5+delay,repeat:Infinity,ease:"easeInOut",delay}}}
+    >
+      <div className="card-label-mini">{card.badge}</div>
+      <div className="card-svg"><CardImg src={card.img} /></div>
+      <div className="card-text-mini">{card.lines.join(" ")}</div>
+      <div className="card-stars">✦ ✦ ✦</div>
+    </motion.div>
+  );
+}
+
+// ── HERO ──────────────────────────────────────────────────────
+function Hero() {
+  return (
+    <section id="hero">
+      <StarsBg />
+      <div className="hero-ring" /><div className="hero-ring" /><div className="hero-ring" />
+
+      <div className="hero-split">
+        {/* LEFT: copy */}
+        <div className="hero-left">
+          <motion.div className="hero-pre" initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8}}>
+            <span className="star star-sm" />
+            <span>40 cartas · diseño premium · edades 3–7</span>
+            <span className="star star-sm" />
+          </motion.div>
+
+          <motion.h1 className="hero-title" initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.15}}>
+            Seeds of <em>Light</em>
+          </motion.h1>
+
+          <motion.p className="hero-subtitle-script" initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.25}}>
+            Semillas de Confianza y Calma para tus hijos
+          </motion.p>
+
+          <motion.p className="hero-desc" style={{margin:"0 0 2rem"}} initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.35}}>
+            Un mazo de 40 cartas diseñadas con amor para acompañar a niñas y niños de 3 a 7 años
+            a gestionar sus emociones, cultivar su autoestima y conectar con su calma interior.
+          </motion.p>
+
+          <motion.div className="hero-btns" style={{justifyContent:"flex-start"}} initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.45}}>
+            <a href="#pricing" className="btn-primary"><span className="star star-sm" />Quiero mi kit ahora</a>
+            <a href="#guia" className="btn-secondary">Ver el libro →</a>
+          </motion.div>
+
+          <motion.div className="hero-trust" initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.6}}>
+            <span>⭐ 4.9/5 de más de 1,200 familias</span>
+            <span className="trust-dot">·</span>
+            <span>Descarga instantánea</span>
+            <span className="trust-dot">·</span>
+            <span>Garantía 30 días</span>
+          </motion.div>
+        </div>
+
+        {/* RIGHT: 3D box */}
+        <motion.div className="hero-right" initial={{opacity:0,x:40}} animate={{opacity:1,x:0}} transition={{duration:1,delay:.3}}>
+          <div style={{position:"relative",width:320,height:400,display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <DeckBoxMockup />
+            <FloatCard card={DECK[0]}  cls="mc-blush" delay={0.7} style={{width:88,height:132,top:20,left:-15,transform:"rotate(-8deg)",zIndex:2}} />
+            <FloatCard card={DECK[12]} cls="mc-sage"  delay={0.9} style={{width:82,height:124,bottom:30,left:-5,transform:"rotate(6deg)",zIndex:2}} />
+            <FloatCard card={DECK[33]} cls="mc-sky"   delay={1.1} style={{width:82,height:124,bottom:10,right:-10,transform:"rotate(-5deg)",zIndex:2}} />
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ── PROBLEM ───────────────────────────────────────────────────
+function ProblemSection() {
+  return (
+    <section id="problem">
+      <div className="section-inner">
+        <div className="problem-grid">
+          <div className="problem-text reveal">
+            <div className="section-tag"><span className="star star-sm" />Algo que muchas familias sienten</div>
+            <h2>¿Tu hijo o hija tiene explosiones emocionales que no sabes cómo calmar?</h2>
+            <p>Las niñas y niños de 3 a 7 años viven en un estado de emociones gigantes dentro de un cuerpo pequeño. No es que sean difíciles — es que todavía no tienen las herramientas para gestionar lo que sienten.</p>
+            <p>Quieres ayudarle. Pero los recursos no siempre son accesibles o cálidos.</p>
+            <ul className="problem-list">
+              <li><div className="icon"><Ico name="burst"     color="#C05030" /></div><span>Rabietas que parecen salir de la nada y no sabes cómo responder</span></li>
+              <li><div className="icon"><Ico name="moonCloud" color="#7090B0" /></div><span>Miedos nocturnos, ansiedad de separación, inseguridad constante</span></li>
+              <li><div className="icon"><Ico name="speechX"   color="#B06070" /></div><span>Frases como "no puedo", "soy malo", "nadie me quiere"</span></li>
+              <li><div className="icon"><Ico name="moonZ"     color="#8070A0" /></div><span>Noches difíciles donde el sueño no llega y la mente no para</span></li>
+            </ul>
+          </div>
+          <div className="problem-visual reveal reveal-delay-2">
+            <div className="quote-card">
+              <p>"Miraba a mi hija llorar y no sabía qué decirle. Quería darle algo real, no solo palabras vacías."</p>
+              <div className="quote-author">— Sofía, mamá de Lucía, 4 años</div>
+            </div>
+            <div className="quote-card">
+              <p>"Mi hijo se quedaba paralizado cuando se sentía mal. No tenía ninguna herramienta para salir de ahí."</p>
+              <div className="quote-author">— María José, mamá de Tomás, 6 años</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── SOLUTION / BENEFITS ───────────────────────────────────────
+function SolutionSection() {
+  const benefits = [
+    { icon:"butterfly",  icoColor:"#C05080", title:"Confianza que crece",      desc:"Afirmaciones diseñadas por psicólogos infantiles para construir autoestima real desde pequeños.",          cls:"bc-blush", iconCls:"bi-blush" },
+    { icon:"leaf",       icoColor:"#4A7A50", title:"Calma en momentos difíciles",desc:"Técnicas de regulación emocional convertidas en actividades simples que niñas y niños PUEDEN hacer.",           cls:"bc-sage",  iconCls:"bi-sage"  },
+    { icon:"heartPair",  icoColor:"#4080A0", title:"Conexión familiar",         desc:"Un ritual compartido que fortalece el vínculo y crea recuerdos hermosos juntos.",                           cls:"bc-sky",   iconCls:"bi-sky"   },
+    { icon:"heartFlower",icoColor:"#8060A8", title:"Amor propio auténtico",     desc:"No es vanidad — es enseñarle que merecen ser amados exactamente como son.",                                 cls:"bc-lav",   iconCls:"bi-lav"   },
+    { icon:"starShine",  icoColor:"#A07820", title:"Gratitud que transforma",   desc:"La ciencia lo confirma: quienes practican gratitud desde pequeños son más felices y resilientes.",           cls:"bc-gold",  iconCls:"bi-gold"  },
+    { icon:"moonStar",   icoColor:"#506080", title:"Sueño más tranquilo",       desc:"Rituales de relajación para la noche que ayudan a niñas y niños a soltar el día y dormir en paz.",          cls:"bc-cream", iconCls:"bi-cream" },
+  ];
+  return (
+    <section id="solution">
+      <div className="section-inner">
+        <div className="solution-header reveal">
+          <span className="eyebrow">la solución</span>
+          <h2>Un ritual diario de 5 minutos<br/>que cambia todo</h2>
+          <p>Seeds of Light es un mazo de 40 cartas diseñadas para que toda la familia tenga un momento de conexión, calma y crecimiento emocional — cada día.</p>
+        </div>
+        <div className="benefits-grid">
+          {benefits.map((b, i) => (
+            <div key={i} className={`benefit-card ${b.cls} reveal reveal-delay-${(i % 3) + 1}`}>
+              <div className={`benefit-icon ${b.iconCls}`}><Ico name={b.icon} size={30} color={b.icoColor} /></div>
+              <h3>{b.title}</h3>
+              <p>{b.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── CARD (gallery item) ───────────────────────────────────────
 function Card({ card, idx, onClick }) {
   const badge = BADGE_COLORS[idx % BADGE_COLORS.length];
   const num   = String(card.n).padStart(2,"0");
   const tot   = String(TOTAL).padStart(2,"0");
-
   return (
     <motion.div layout
-      initial={{ opacity:0, y:18 }}
-      animate={{ opacity:1, y:0 }}
-      exit={{ opacity:0, scale:0.92 }}
-      transition={{ duration:0.24, delay: Math.min(idx*0.03, 0.55) }}
-      whileHover={{ y:-10, transition:{ duration:0.17 } }}
-      onClick={()=>onClick(card)}
-      style={{ cursor:"pointer" }}
+      initial={{opacity:0,y:18}} animate={{opacity:1,y:0}} exit={{opacity:0,scale:0.92}}
+      transition={{duration:0.24, delay:Math.min(idx*0.03,0.55)}}
+      whileHover={{y:-10, transition:{duration:0.17}}}
+      onClick={()=>onClick(card)} style={{cursor:"pointer"}}
     >
-      <div style={{
-        background:"white", borderRadius:20,
-        padding:"14px 12px 10px",
-        boxShadow:"0 2px 16px rgba(0,0,0,0.08)",
-        display:"flex", flexDirection:"column",
-        aspectRatio:"3/4",
-      }}>
-        {/* Badge */}
-        <div style={{ display:"flex", justifyContent:"center", marginBottom:10 }}>
-          <span style={{
-            background:badge.bg, color:badge.text,
-            fontSize:9, fontWeight:700,
-            padding:"4px 11px", borderRadius:99,
-            letterSpacing:"0.03em", whiteSpace:"nowrap",
-          }}>{card.badge}</span>
+      <div className="show-card">
+        <div style={{display:"flex",justifyContent:"center",marginBottom:10}}>
+          <span style={{background:badge.bg,color:badge.text,fontSize:9,fontWeight:700,padding:"4px 11px",borderRadius:99,letterSpacing:"0.03em",whiteSpace:"nowrap"}}>
+            {card.badge}
+          </span>
         </div>
-
-        {/* Illustration */}
-        <div style={{
-          flex:1, display:"flex",
-          alignItems:"center", justifyContent:"center",
-          padding:"0 6px", overflow:"hidden",
-        }}>
-          <div style={{ width:"90%", maxHeight:"100%" }}>
-            {SVG[card.svg]}
-          </div>
+        <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",padding:"0 6px",overflow:"hidden"}}>
+          <div style={{width:"90%",maxHeight:"100%"}}><CardImg src={card.img} /></div>
         </div>
-
-        {/* Text */}
-        <p style={{
-          fontFamily:"Georgia, 'Times New Roman', serif",
-          fontStyle:"italic",
-          fontSize:"clamp(0.82rem, 2.4vw, 1.05rem)",
-          color:"#5A3D30",
-          textAlign:"center",
-          lineHeight:1.3,
-          margin:"10px 4px 4px",
-        }}>
-          {card.lines.join("\n")}
+        <p style={{fontFamily:"var(--font-serif)",fontStyle:"italic",fontSize:"clamp(0.82rem,2.4vw,1.05rem)",color:"#5A3D30",textAlign:"center",lineHeight:1.3,margin:"10px 4px 4px"}}>
+          {card.lines.join(" ")}
         </p>
-
-        {/* Card number */}
-        <p style={{
-          fontSize:9, color:"#C0AFA0",
-          textAlign:"right", margin:"2px 4px 0",
-          letterSpacing:"0.08em",
-          fontFamily:"sans-serif",
-        }}>
+        <p style={{fontSize:9,color:"#C0AFA0",textAlign:"right",margin:"2px 4px 0",letterSpacing:"0.08em",fontFamily:"var(--font-sans)"}}>
           {num} / {tot}
         </p>
       </div>
@@ -676,129 +1119,503 @@ function Card({ card, idx, onClick }) {
   );
 }
 
-// ── APP ──────────────────────────────────────────────────
-export default function App() {
-  const [cat, setCat] = useState("Todas");
-  const [sel, setSel] = useState(null);
 
-  const visible = cat === "Todas" ? DECK : DECK.filter(c => c.cat === cat);
-  const title   = CAT_TITLE[cat];
-  const count   = visible.length;
+// ── CARD STRIP ────────────────────────────────────────────────
+const STRIP_IDS = ["A01","A04","A08","A13","A20","A26","M01","M03","M05","M08"];
 
+function CardStrip({ onSel }) {
+  const cards = DECK.filter(c => STRIP_IDS.includes(c.id));
   return (
-    <div style={{ minHeight:"100vh", background:"#F0EEEB" }}>
-      <div style={{ maxWidth:1100, margin:"0 auto", padding:"32px 24px 0" }}>
-
-        {/* Header */}
-        <div style={{
-          display:"flex", alignItems:"center",
-          justifyContent:"space-between",
-          flexWrap:"wrap", gap:12, marginBottom:6,
-        }}>
-          <div style={{ display:"flex", alignItems:"baseline", gap:14 }}>
-            <h1 style={{
-              fontFamily:"'Dancing Script', cursive",
-              fontSize:"clamp(1.7rem, 5vw, 2.5rem)",
-              fontWeight:700, color:"#3A2820",
-              margin:0, lineHeight:1,
-            }}>{title}</h1>
-            <span style={{
-              fontSize:"0.68rem", letterSpacing:"0.28em",
-              color:"#B0A090", textTransform:"uppercase", fontWeight:500,
-            }}>{count} cartas</span>
-          </div>
-
-          {/* Category pills */}
-          <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
-            {CATS.map(c => {
-              const active = cat === c;
-              return (
-                <motion.button key={c}
-                  whileHover={{ scale:1.04 }} whileTap={{ scale:0.96 }}
-                  onClick={()=>setCat(c)}
-                  style={{
-                    padding:"6px 16px", borderRadius:99, border:"none",
-                    cursor:"pointer", fontSize:12,
-                    background: active ? "#5A3D30" : "white",
-                    color: active ? "white" : "#8A7060",
-                    fontWeight: active ? 700 : 500,
-                    boxShadow: active
-                      ? "0 4px 14px rgba(90,61,48,.28)"
-                      : "0 1px 5px rgba(0,0,0,.07)",
-                    transition:"all .18s",
-                  }}
-                >{c}</motion.button>
-              );
-            })}
-          </div>
-        </div>
-
-        <hr style={{ border:"none", borderTop:"1px solid #DDD8D2", margin:"10px 0 24px" }}/>
-
-        {/* Grid */}
-        <motion.div layout style={{
-          display:"grid",
-          gridTemplateColumns:"repeat(auto-fill, minmax(155px, 1fr))",
-          gap:16, paddingBottom:48,
-        }}>
-          <AnimatePresence mode="popLayout">
-            {visible.map((c,i) => (
-              <Card key={c.id} card={c} idx={i} onClick={setSel}/>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+    <section id="cartas" style={{padding:"3rem 0 2.5rem", background:"var(--cream)"}}>
+      <div style={{textAlign:"center",marginBottom:"1.6rem",padding:"0 1.5rem"}}>
+        <span className="label">Las cartas · muestra de 10</span>
+        <p style={{color:"var(--mid)",fontSize:".9rem",marginTop:".4rem"}}>
+          Haz clic en cualquier carta para verla en detalle. El kit completo incluye 40.
+        </p>
       </div>
-
-      {/* Modal */}
-      <AnimatePresence>
-        {sel && (
-          <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}
-            style={{
-              position:"fixed", inset:0,
-              background:"rgba(60,40,30,.65)",
-              backdropFilter:"blur(12px)",
-              display:"flex", alignItems:"center", justifyContent:"center",
-              zIndex:999, padding:20,
-            }}
-            onClick={()=>setSel(null)}
-          >
-            <motion.div
-              initial={{scale:0.84, y:30}} animate={{scale:1, y:0}} exit={{scale:0.88}}
-              transition={{type:"spring", stiffness:300, damping:26}}
-              onClick={e=>e.stopPropagation()}
-              style={{
-                width:"min(320px, 90vw)", background:"white",
-                borderRadius:24, boxShadow:"0 40px 100px rgba(0,0,0,.25)",
-                overflow:"hidden", position:"relative",
-              }}
-            >
-              <button onClick={()=>setSel(null)} style={{
-                position:"absolute", top:12, right:12,
-                background:"rgba(0,0,0,.08)", border:"none", borderRadius:"50%",
-                width:28, height:28, cursor:"pointer", fontSize:14, color:"#5C3A10",
-                display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800,
-              }}>✕</button>
-              <div style={{ padding:"28px 24px 24px", display:"flex", flexDirection:"column", alignItems:"center", gap:12 }}>
-                <span style={{
-                  background: BADGE_COLORS[sel.n % BADGE_COLORS.length].bg,
-                  color: BADGE_COLORS[sel.n % BADGE_COLORS.length].text,
-                  fontSize:10, fontWeight:700,
-                  padding:"4px 14px", borderRadius:99,
-                }}>{sel.badge}</span>
-                <div style={{ width:140 }}>{SVG[sel.svg]}</div>
-                <p style={{
-                  fontFamily:"Georgia, serif", fontStyle:"italic",
-                  fontSize:"1.25rem", color:"#3A2820",
-                  textAlign:"center", lineHeight:1.4, margin:0,
-                }}>{sel.lines.join(" ")}</p>
-                <p style={{ fontSize:10, color:"#C0AFA0", letterSpacing:"0.08em" }}>
-                  {String(sel.n).padStart(2,"0")} / {String(TOTAL).padStart(2,"0")}
+      <div className="deck-strip-wrap">
+        <div className="deck-strip">
+          {cards.map((c, i) => {
+            const badge = BADGE_COLORS[i % BADGE_COLORS.length];
+            return (
+              <div key={c.id} className="deck-strip-card" onClick={() => onSel(c)}>
+                <div style={{display:"flex",justifyContent:"center",marginBottom:8}}>
+                  <span style={{background:badge.bg,color:badge.text,fontSize:8,fontWeight:700,padding:"3px 10px",borderRadius:99,letterSpacing:"0.03em",whiteSpace:"nowrap"}}>
+                    {c.badge}
+                  </span>
+                </div>
+                <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",padding:"0 4px"}}>
+                  <CardImg src={c.img} />
+                </div>
+                <p style={{fontFamily:"var(--font-serif)",fontStyle:"italic",fontSize:".88rem",color:"#5A3D30",textAlign:"center",lineHeight:1.3,marginTop:8}}>
+                  {c.lines.join(" ")}
                 </p>
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            );
+          })}
+        </div>
+      </div>
+      <div style={{textAlign:"center",marginTop:"1.6rem"}}>
+        <a href="#pricing" className="btn-primary" style={{display:"inline-flex"}}>
+          <span className="star star-sm" />Ver el kit completo
+        </a>
+      </div>
+    </section>
+  );
+}
+
+// ── GUIA PREVIEW ─────────────────────────────────────────────
+const GUIDE_PAGES = [
+  {
+    n:"01", cat:"Afirmación", dotColor:"#D49090",
+    img:"/cards/c01.png",
+    title:"El espejo del amor",
+    affirmation:["Soy amado","y valorado"],
+    questions:[
+      "¿Cómo le recordaste hoy que es amado, sin palabras?",
+      "¿De quién aprendiste tú a sentirte amado?",
+    ],
+    age:"3 – 9 años", time:"~ 2 min", page:9,
+  },
+  {
+    n:"02", cat:"Afirmación", dotColor:"#D49090",
+    img:"/cards/c02.png",
+    title:"Lugar seguro",
+    affirmation:["Eres mi","lugar seguro"],
+    questions:[
+      "¿Qué hace de tu regazo un refugio?",
+      "Cierra los ojos: ¿quién es tu lugar seguro?",
+    ],
+    age:"3 – 9 años", time:"~ 3 min", page:10,
+  },
+];
+
+function BookPage({ p, side }) {
+  const radius = side === "left"
+    ? { borderRadius:"12px 0 0 12px" }
+    : { borderRadius:"0 12px 12px 0" };
+  return (
+    <div className="book-page" style={radius}>
+      <div className="book-page-header">
+        <span className="book-cat">
+          <span style={{display:"inline-block",width:8,height:8,borderRadius:"50%",background:p.dotColor,marginRight:6,verticalAlign:"middle"}} />
+          {p.cat.toUpperCase()}
+        </span>
+        <span className="book-carta"><em>Carta {p.n} / 40</em></span>
+      </div>
+
+      <div className="book-illo">
+        <img src={p.img} alt="" style={{width:"100%",height:"100%",objectFit:"contain"}} />
+      </div>
+
+      <h3 className="book-title"><em>{p.title}</em></h3>
+      <p className="book-affirmation">
+        {p.affirmation.map((l, i) => <span key={i}>{l}{i < p.affirmation.length - 1 && <br/>}</span>)}
+      </p>
+
+      <hr className="book-divider" />
+
+      <p className="book-section-label">Para conversar juntos</p>
+      <ul className="book-questions">
+        {p.questions.map((q, i) => <li key={i}>{q}</li>)}
+      </ul>
+
+      <div className="book-footer">
+        <span>Edad · {p.age}</span>
+        <span>{p.time}</span>
+      </div>
+      <p className="book-pagenum">{p.page}</p>
     </div>
+  );
+}
+
+function GuiaSection() {
+  return (
+    <section id="guia" style={{padding:"5rem 0", background:"var(--cream-deep)"}}>
+      <div className="section-inner">
+        <div className="reveal" style={{textAlign:"center",marginBottom:"3rem"}}>
+          <span className="eyebrow">dentro del libro</span>
+          <h2>Una guía completa para acompañar cada carta</h2>
+          <p style={{color:"var(--mid)",maxWidth:520,margin:".8rem auto 0"}}>
+            El libro incluye una página por carta con preguntas para conversar, actividades y contexto para los padres.
+          </p>
+        </div>
+
+        <div className="book-spread reveal reveal-delay-1">
+          <div className="book-spine" />
+          <BookPage p={GUIDE_PAGES[0]} side="left" />
+          <BookPage p={GUIDE_PAGES[1]} side="right" />
+        </div>
+
+        <div style={{textAlign:"center",marginTop:"2.5rem",display:"flex",flexDirection:"column",alignItems:"center",gap:"1rem"}}>
+          <p style={{display:"flex",alignItems:"center",gap:".5rem",color:"var(--mid)",fontSize:".9rem"}}>
+            <Ico name="openBook" size={18} color="var(--soft)" />
+            <span>40 páginas más incluidas con tu kit · todas bloqueadas hasta la compra</span>
+          </p>
+          <a href="#pricing" className="btn-primary">
+            <span className="star star-sm" />Desbloquear el libro completo
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── MOMENTOS ──────────────────────────────────────────────────
+function MomentosSection() {
+  const moments = [
+    { icon:"moonLg",  icoColor:"#7060A0", time:"Antes de dormir",    desc:"Elige una carta juntos, léela en voz alta y hazla parte del ritual nocturno. Las rabietas antes de dormir se reducen casi por completo.", color:"rgba(196,184,216,.25)" },
+    { icon:"carLg",   icoColor:"#4080A0", time:"En el coche",        desc:"Sin pantallas, sin ruido. Una carta en el asiento trasero convierte el trayecto en un momento de conexión real.", color:"rgba(184,212,232,.25)" },
+    { icon:"plateLg", icoColor:"#C07040", time:"Durante la cena",    desc:"\"¿Cuál es tu carta favorita esta semana?\" Esa pregunta abre conversaciones que no sabías que necesitabas tener.", color:"rgba(232,196,184,.25)" },
+    { icon:"sunLg",   icoColor:"#B08020", time:"Después del colegio",desc:"Cuando llega cargado de emociones del día, una carta le da lenguaje para lo que siente antes de que explote.", color:"rgba(168,191,168,.25)" },
+  ];
+  return (
+    <section id="momentos" style={{padding:"5rem 0",background:"var(--cream-deep)"}}>
+      <div className="section-inner">
+        <div className="reveal" style={{textAlign:"center",marginBottom:"3rem"}}>
+          <span className="eyebrow">imagina este momento</span>
+          <h2>Las cartas funcionan en cualquier parte de tu día</h2>
+          <p style={{color:"var(--mid)",maxWidth:520,margin:".8rem auto 0"}}>
+            No necesitas un ritual complicado. Solo necesitas un momento. Y una carta.
+          </p>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:"1.5rem"}}>
+          {moments.map((m, i) => (
+            <div key={i} className={`reveal reveal-delay-${i+1}`} style={{background:m.color,border:"1px solid rgba(120,90,70,.1)",borderRadius:20,padding:"2rem 1.5rem",textAlign:"center"}}>
+              <div style={{marginBottom:"1rem",display:"flex",justifyContent:"center"}}><Ico name={m.icon} size={48} color={m.icoColor} /></div>
+              <h3 style={{fontSize:"1.1rem",marginBottom:".6rem",color:"var(--dark)"}}>{m.time}</h3>
+              <p style={{fontSize:".88rem",color:"var(--mid)",lineHeight:1.6}}>{m.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── APRENDE ───────────────────────────────────────────────────
+function AprenderSection() {
+  const child = [
+    "Identificar y nombrar sus emociones",
+    "Expresar lo que siente con palabras",
+    "Calmarse cuando está frustrado o asustado",
+    "Construir autoestima desde adentro",
+    "Practicar gratitud cada día",
+    "Crear hábitos emocionales positivos",
+  ];
+  const mama = [
+    "Tendrás herramientas cuando no sepas qué decir",
+    "Crearás momentos de conexión reales, no forzados",
+    "Reducirás las luchas emocionales del día a día",
+    "Tendrás actividades listas para usar en segundos",
+    "Te sentirás más seguro/a acompañando sus emociones",
+    "Construirás un vínculo que dura toda la vida",
+  ];
+  return (
+    <section id="aprende" style={{padding:"5rem 0"}}>
+      <div className="section-inner">
+        <div className="reveal" style={{textAlign:"center",marginBottom:"3rem"}}>
+          <span className="eyebrow">lo que cambia</span>
+          <h2>Para tu hijo o hija, y para ti</h2>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))",gap:"2.5rem"}}>
+          <div className="reveal reveal-delay-1">
+            <h3 style={{fontSize:"1.4rem",marginBottom:"1.2rem",color:"var(--blush-deep)"}}>¿Qué aprenderán tus hijos?</h3>
+            <ul style={{listStyle:"none",display:"flex",flexDirection:"column",gap:".8rem"}}>
+              {child.map((item, i) => (
+                <li key={i} style={{display:"flex",gap:".75rem",alignItems:"flex-start",fontSize:".92rem",color:"var(--dark)"}}>
+                  <span style={{color:"var(--gold)",fontSize:"1rem",marginTop:"2px",flexShrink:0}}>✦</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="reveal reveal-delay-2">
+            <h3 style={{fontSize:"1.4rem",marginBottom:"1.2rem",color:"var(--sage)"}}>¿Qué cambia para ti?</h3>
+            <ul style={{listStyle:"none",display:"flex",flexDirection:"column",gap:".8rem"}}>
+              {mama.map((item, i) => (
+                <li key={i} style={{display:"flex",gap:".75rem",alignItems:"flex-start",fontSize:".92rem",color:"var(--dark)"}}>
+                  <span style={{color:"var(--sage)",fontSize:"1rem",marginTop:"2px",flexShrink:0}}>✔</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── HOW IT WORKS ──────────────────────────────────────────────
+function HowSection() {
+  const calmCard = DECK[5]; // turtle — "Respiro paz y calma"
+  const steps = [
+    { n:"1", title:"Elige una carta juntos",      text:"Cada mañana o noche, tu hijo o hija elige la carta que le llama. Ese pequeño gesto ya es magia." },
+    { n:"2", title:"Léela en voz alta",            text:"La afirmación entra por los oídos y se instala en el corazón. Répetela junto a él." },
+    { n:"3", title:"Haz la actividad (si hay una)",text:"Algunas cartas traen micro-actividades de 2 minutos: respirar, dibujar, abrazar, agradecer." },
+    { n:"4", title:"Guárdala como tesoro",         text:"Las cartas quedan en casa. Tu hijo puede volver a la que necesita en cualquier momento." },
+  ];
+  return (
+    <section id="how">
+      <div className="section-inner">
+        <div className="how-grid">
+          <div>
+            <span className="label">cómo funciona</span>
+            <h2 style={{fontSize:"clamp(2rem,4vw,3rem)",margin:".6rem 0 2rem"}}>
+              Un ritual simple.<br/>Un impacto <em style={{fontStyle:"italic",color:"var(--blush-deep)"}}>profundo.</em>
+            </h2>
+            <div className="how-steps">
+              {steps.map((s, i) => (
+                <div key={i} className={`how-step reveal reveal-delay-${i}`}>
+                  <div className="step-number">{s.n}</div>
+                  <div className="step-content"><h4>{s.title}</h4><p>{s.text}</p></div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="how-visual reveal reveal-delay-2">
+            <div className="bg-card-2" /><div className="bg-card-3" />
+            <div className="big-card">
+              <div className="big-card-label">✦ {calmCard.badge} ✦</div>
+              <div style={{width:100}}><CardImg src={calmCard.img} /></div>
+              <div className="big-card-text">{calmCard.lines.join(" ")}</div>
+              <div className="big-card-stars">✦ ✦ ✦ ✦ ✦</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── PRICING ───────────────────────────────────────────────────
+function KitContents({ includePhysical }) {
+  const digital = [
+    { icon:"cardDeck",   icoColor:"#7A5A30", label:"40 cartas emocionales", sub:"Afirmaciones + mindfulness en PDF" },
+    { icon:"openBook",   icoColor:"#6A7A50", label:"Libro guía para familias", sub:"Cómo usar las cartas en cada etapa" },
+    { icon:"papers",     icoColor:"#507090", label:"Actividades imprimibles",sub:"Hojas de trabajo para explorar emociones" },
+    { icon:"moonRitual", icoColor:"#706090", label:"Rutina de 5 minutos",    sub:"Ritual nocturno antes de dormir (PDF)" },
+  ];
+  return (
+    <ul className="price-features" style={{gap:".95rem"}}>
+      {includePhysical && (
+        <>
+          <li><span className="check">✦</span> <strong>40 cartas impresas</strong> en cartulina premium mate</li>
+          <li><span className="check">✦</span> Caja preciosa lista para regalar</li>
+        </>
+      )}
+      {digital.map((d, i) => (
+        <li key={i} style={{display:"flex",gap:".6rem",alignItems:"flex-start"}}>
+          <Ico name={d.icon} size={22} color={d.icoColor} />
+          <span><strong style={{display:"block",lineHeight:1.2}}>{d.label}</strong><span style={{fontSize:".78rem",color:"var(--soft)"}}>{d.sub}</span></span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function PricingSection() {
+  return (
+    <section id="pricing">
+      <div className="section-inner">
+        <div className="pricing-header reveal">
+          <span className="label">kit emocional completo</span>
+          <h2>Todo lo que recibe tu familia</h2>
+          <p>No son solo cartas. Es un sistema completo para acompañar las emociones de tus hijos.</p>
+        </div>
+        <div className="pricing-grid">
+          <div className="price-card reveal reveal-delay-1">
+            <div className="price-type">kit digital</div>
+            <h3>Kit Completo Digital</h3>
+            <div className="price-amount"><span>$</span>14<span style={{fontSize:".9rem",opacity:.5}}>.99</span></div>
+            <KitContents includePhysical={false} />
+            <a href="#" className="btn-price btn-price-dark">Descargar mi kit ahora</a>
+          </div>
+          <div className="price-card featured reveal reveal-delay-2">
+            <div className="price-badge">✦ Más amado</div>
+            <div className="price-type">kit físico + digital</div>
+            <h3>Kit Premium Completo</h3>
+            <div className="price-amount"><span>$</span>38<span style={{fontSize:".9rem",opacity:.5}}>.99</span></div>
+            <KitContents includePhysical={true} />
+            <a href="#" className="btn-price btn-price-light">Quiero el kit físico</a>
+          </div>
+        </div>
+        <p style={{textAlign:"center",marginTop:"1.5rem",fontSize:".8rem",color:"var(--soft)"}}>
+          ✦ Garantía de amor: si no te encanta, te devolvemos tu dinero en 30 días ✦
+        </p>
+      </div>
+    </section>
+  );
+}
+
+// ── TESTIMONIALS ──────────────────────────────────────────────
+function TestimonialsSection() {
+  const list = [
+    { stars:"★★★★★", text:'"Mi hija de 5 años pide su carta cada mañana antes de ir al colegio. Se ha vuelto parte de nuestra rutina y noto cómo ha crecido su seguridad. Es el mejor recurso que he encontrado."', avatar:"🌸", bg:"rgba(232,196,184,.3)", name:"Ana Belén R.", role:"Mamá de Emma, 5 años · Madrid" },
+    { stars:"★★★★★", text:'"Compramos el mazo físico y es precioso. Las cartas son de muy buena calidad. Mi hijo autista las usa todos los días y han sido una herramienta increíble."', avatar:"🌿", bg:"rgba(168,191,168,.3)", name:"Carla M.", role:"Mamá de Marcos, 6 años · Buenos Aires" },
+    { stars:"★★★★★", text:'"Las imprimí en casa y son igual de bonitas. Hice un ritual nocturno con mi hijo y las rabietas antes de dormir desaparecieron casi por completo. No puedo creer el cambio."', avatar:"💫", bg:"rgba(196,184,216,.3)", name:"Valeria T.", role:"Mamá de Simón, 4 años · Ciudad de México" },
+  ];
+  return (
+    <section id="testimonials">
+      <div className="section-inner">
+        <div className="testimonials-header reveal">
+          <span className="label">familias que ya sembraron luz</span>
+          <h2>Lo que dicen las familias</h2>
+        </div>
+        <div className="testimonials-grid">
+          {list.map((t, i) => (
+            <div key={i} className={`testimonial-card reveal reveal-delay-${i+1}`}>
+              <div className="testi-stars">{t.stars}</div>
+              <p className="testi-text">{t.text}</p>
+              <div className="testi-author">
+                <div className="testi-avatar" style={{background:t.bg}}>{t.avatar}</div>
+                <div><div className="testi-name">{t.name}</div><div className="testi-role">{t.role}</div></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── FAQ ───────────────────────────────────────────────────────
+function FAQSection() {
+  const [openIdx, setOpenIdx] = useState(null);
+  const faqs = [
+    { q:"¿Para qué edades son las cartas?",           a:"Las cartas están diseñadas para niñas y niños de 3 a 7 años, aunque muchas familias las usan hasta los 9-10 con excelentes resultados. El lenguaje es simple, visual y emocional — accesible para las mentes pequeñas y hermoso para las grandes." },
+    { q:"¿Necesito impresora de buena calidad?",       a:"No necesariamente. El PDF está optimizado para verse hermoso incluso en impresoras domésticas estándar. También puedes llevarlo a cualquier copistería. El resultado es igualmente precioso." },
+    { q:"¿Cuánto tiempo al día debo dedicarle?",       a:"Con 5 minutos al día es suficiente para empezar a ver cambios. Muchas familias eligen una carta por la mañana o como ritual nocturno. No hay reglas — adapta las cartas a tu ritmo y al de tus hijos." },
+    { q:"¿Funcionan si mi hijo tiene necesidades especiales?", a:"Las cartas han sido especialmente bien recibidas por familias con niños con TEA, TDAH y alta sensibilidad. El formato visual y el lenguaje simple las hace muy accesibles. Consulta con tu profesional si tienes dudas específicas." },
+    { q:"¿Puedo regalarlas?", a:"Son uno de los regalos más especiales que puedes hacer. La versión física viene en una caja preciosa lista para regalar. La versión PDF incluye un certificado de regalo digital que puedes enviar por email o imprimir." },
+  ];
+  return (
+    <section id="faq">
+      <div className="section-inner">
+        <div className="faq-header reveal">
+          <span className="label">preguntas frecuentes</span>
+          <h2>Todo lo que quieres saber</h2>
+        </div>
+        <div className="faq-list">
+          {faqs.map((f, i) => (
+            <div key={i} className={`faq-item reveal reveal-delay-${i % 4} ${openIdx === i ? "open" : ""}`}>
+              <button className="faq-question" onClick={() => setOpenIdx(openIdx === i ? null : i)}>
+                {f.q}<span className="faq-arrow">▼</span>
+              </button>
+              <div className="faq-answer"><div className="faq-answer-inner">{f.a}</div></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── CTA ───────────────────────────────────────────────────────
+function CTASection() {
+  return (
+    <section id="cta">
+      <div className="cta-ring" /><div className="cta-ring" />
+      <div className="section-inner">
+        <div className="cta-star-row">
+          <span className="star star-md" style={{color:"rgba(250,246,240,.3)"}} />
+          <span className="star star-lg" style={{color:"rgba(250,246,240,.5)"}} />
+          <span className="star star-md" style={{color:"rgba(250,246,240,.3)"}} />
+        </div>
+        <span className="eyebrow">empieza hoy</span>
+        <h2>Dale a tu hijo o hija<br/>las herramientas que merece</h2>
+        <p>No hay fórmula perfecta. Solo necesitas este pequeño ritual de 5 minutos y unas cartas llenas de amor.</p>
+        <div className="hero-btns">
+          <a href="#pricing" className="btn-primary" style={{background:"var(--cream)",color:"var(--dark)"}}>
+            <span style={{color:"var(--gold)"}}>✦</span>Conseguir mi mazo
+          </a>
+          <a href="#guia" className="btn-secondary" style={{borderColor:"rgba(250,246,240,.3)",color:"rgba(250,246,240,.7)"}}>
+            Ver el libro
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── FOOTER ────────────────────────────────────────────────────
+function Footer() {
+  return (
+    <footer>
+      <span className="footer-logo">Seeds of Light</span>
+      <p>© 2025 Seeds of Light · Hecho con amor para las familias del mundo</p>
+      <p style={{marginTop:".5rem"}}>contacto@seedsoflight.com &nbsp;·&nbsp; Etsy &nbsp;·&nbsp; Instagram</p>
+    </footer>
+  );
+}
+
+// ── CARD MODAL ────────────────────────────────────────────────
+function CardModal({ card, onClose }) {
+  const badge = BADGE_COLORS[card.n % BADGE_COLORS.length];
+  return (
+    <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}
+      style={{position:"fixed",inset:0,background:"rgba(60,40,30,.65)",backdropFilter:"blur(12px)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:999,padding:20}}
+      onClick={onClose}
+    >
+      <motion.div initial={{scale:0.84,y:30}} animate={{scale:1,y:0}} exit={{scale:0.88}}
+        transition={{type:"spring",stiffness:300,damping:26}}
+        onClick={e=>e.stopPropagation()}
+        style={{width:"min(340px,90vw)",background:"white",borderRadius:28,boxShadow:"0 40px 100px rgba(0,0,0,.25)",overflow:"hidden",position:"relative"}}
+      >
+        <button onClick={onClose} style={{position:"absolute",top:12,right:12,background:"rgba(0,0,0,.08)",border:"none",borderRadius:"50%",width:32,height:32,cursor:"pointer",fontSize:14,color:"#5C3A10",display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800}}>✕</button>
+        <div style={{padding:"32px 24px 28px",display:"flex",flexDirection:"column",alignItems:"center",gap:14}}>
+          <span style={{background:badge.bg,color:badge.text,fontSize:10,fontWeight:700,padding:"5px 16px",borderRadius:99,letterSpacing:"0.04em"}}>{card.badge}</span>
+          <div style={{width:160}}><CardImg src={card.img} /></div>
+          <p style={{fontFamily:"var(--font-serif)",fontStyle:"italic",fontSize:"1.35rem",color:"#3A2820",textAlign:"center",lineHeight:1.4,margin:0}}>
+            {card.lines.join(" ")}
+          </p>
+          <p style={{fontSize:11,color:"#C0AFA0",letterSpacing:"0.08em"}}>
+            {String(card.n).padStart(2,"0")} / {String(TOTAL).padStart(2,"0")}
+          </p>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────
+function useScrollReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll(".reveal");
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } });
+    }, { threshold: .12 });
+    els.forEach(r => obs.observe(r));
+    return () => obs.disconnect();
+  }, []);
+}
+
+// ── APP ───────────────────────────────────────────────────────
+export default function App() {
+  const [sel, setSel] = useState(null);
+  useScrollReveal();
+
+  return (
+    <>
+      <div className="top-banner">✦ &nbsp; Kit completo: cartas + libro guía + actividades &nbsp; ✦ &nbsp; Descarga instantánea &nbsp; ✦</div>
+      <Nav />
+      <Hero />
+      <CardStrip onSel={setSel} />
+      <ProblemSection />
+      <SolutionSection />
+      <GuiaSection />
+      <MomentosSection />
+      <AprenderSection />
+      <HowSection />
+      <PricingSection />
+      <TestimonialsSection />
+      <FAQSection />
+      <CTASection />
+      <Footer />
+      <AnimatePresence>
+        {sel && <CardModal card={sel} onClose={() => setSel(null)} />}
+      </AnimatePresence>
+    </>
   );
 }
