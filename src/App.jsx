@@ -936,30 +936,55 @@ const MC_BG = {
   "mc-lav":  "linear-gradient(150deg,#F5F0FF,#EAE0FF)",
 };
 
-function FloatCard({ card, style, cls="mc-blush", delay=0, size=1 }) {
+function FloatCard({ card, style, delay=0, size=1 }) {
   const badge = BADGE_COLORS[card.n % BADGE_COLORS.length];
-  const W = Math.round(110*size), H = Math.round(165*size);
-  const br = Math.round(14*size);
+  const W = Math.round(150*size), H = Math.round(210*size);
+  const br = Math.round(20*size);
+  const badgeFz = Math.round(9*size);
+  const badgePad = `${Math.round(4*size)}px ${Math.round(12*size)}px`;
+  const imgW = Math.round(100*size);
+  const textFz = `${.68*size}rem`;
+
   return (
     <motion.div
       style={{
         position:"absolute", width:W, height:H,
-        background: MC_BG[cls]||"white",
+        background:"white",
         borderRadius: br,
-        border:"1px solid rgba(255,255,255,.9)",
-        boxShadow:`0 ${Math.round(10*size)}px ${Math.round(36*size)}px rgba(60,50,40,.14)`,
-        display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
-        gap:`${.3*size}rem`, padding:`${.9*size}rem ${.6*size}rem`,
+        border:"1px solid rgba(240,230,220,.8)",
+        boxShadow:`0 ${Math.round(12*size)}px ${Math.round(40*size)}px rgba(60,50,40,.16)`,
+        display:"flex", flexDirection:"column", alignItems:"center",
+        padding:`${Math.round(14*size)}px ${Math.round(10*size)}px ${Math.round(12*size)}px`,
+        gap:`${Math.round(6*size)}px`,
+        overflow:"hidden",
         ...style
       }}
-      initial={{opacity:0,scale:.8}}
-      animate={{opacity:1,scale:1,y:[0,Math.round(-9*size),0]}}
-      transition={{opacity:{duration:.6,delay},scale:{duration:.6,delay},y:{duration:3.8+delay,repeat:Infinity,ease:"easeInOut",delay}}}
+      initial={{opacity:0,scale:.85}}
+      animate={{opacity:1,scale:1,y:[0,Math.round(-10*size),0]}}
+      transition={{opacity:{duration:.5,delay},scale:{duration:.5,delay},y:{duration:4+delay,repeat:Infinity,ease:"easeInOut",delay}}}
     >
-      <div style={{fontFamily:"var(--font-sans)",fontSize:`${.38*size}rem`,letterSpacing:".15em",textTransform:"uppercase",color:"var(--soft)",textAlign:"center",lineHeight:1.3}}>{card.badge}</div>
-      <div style={{width:`${60*size}px`,height:`${52*size}px`,display:"flex",alignItems:"center",justifyContent:"center"}}><CardImg src={card.img}/></div>
-      <div style={{fontFamily:"var(--font-serif)",fontStyle:"italic",fontSize:`${.52*size}rem`,textAlign:"center",color:"var(--dark)",lineHeight:1.3,padding:`0 ${.2*size}rem`}}>{card.lines.join(" ")}</div>
-      <div style={{fontSize:`${.3*size}rem`,color:"var(--gold)",letterSpacing:".1em"}}>✦ ✦ ✦</div>
+      {/* Badge — mismo diseño que las cartas reales */}
+      <span style={{
+        background:badge.bg, color:badge.text,
+        fontSize:badgeFz, fontWeight:700,
+        padding:badgePad, borderRadius:99,
+        letterSpacing:"0.03em", whiteSpace:"nowrap",
+        fontFamily:"var(--font-sans)",
+      }}>{card.badge}</span>
+
+      {/* Ilustración */}
+      <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",width:"100%"}}>
+        <img src={card.img} alt={card.lines.join(" ")}
+          style={{width:imgW,height:"auto",objectFit:"contain",display:"block"}}/>
+      </div>
+
+      {/* Afirmación */}
+      <p style={{
+        fontFamily:"var(--font-serif)", fontStyle:"italic",
+        fontSize:textFz, color:"#5A3D30",
+        textAlign:"center", lineHeight:1.35, margin:0,
+        padding:`0 ${Math.round(4*size)}px`,
+      }}>{card.lines.join(" ")}</p>
     </motion.div>
   );
 }
@@ -995,10 +1020,10 @@ function Hero() {
         <div className="hero-glow" />
 
         {/* Floating cards — back layer */}
-        <FloatCard card={DECK[3]}  cls="mc-blush" size={1.45} delay={.8}
-          style={{top:-10, left:-30, transform:"rotate(-16deg)", zIndex:1}} />
-        <FloatCard card={DECK[19]} cls="mc-lav"   size={1.2}  delay={1.4}
-          style={{bottom:20, left:-10, transform:"rotate(10deg)", zIndex:1}} />
+        <FloatCard card={DECK[3]}  size={1.05} delay={.8}
+          style={{top:-5, left:-80, transform:"rotate(-14deg)", zIndex:1}} />
+        <FloatCard card={DECK[19]} size={.95}  delay={1.4}
+          style={{bottom:10, left:-65, transform:"rotate(10deg)", zIndex:1}} />
 
         {/* Main box */}
         <div style={{position:"relative",zIndex:3}}>
@@ -1006,10 +1031,10 @@ function Hero() {
         </div>
 
         {/* Floating cards — front layer */}
-        <FloatCard card={DECK[12]} cls="mc-sage" size={1.35} delay={1.0}
-          style={{top:10, right:-40, transform:"rotate(14deg)", zIndex:4}} />
-        <FloatCard card={DECK[24]} cls="mc-sky"  size={1.15} delay={1.6}
-          style={{bottom:15, right:-10, transform:"rotate(-8deg)", zIndex:4}} />
+        <FloatCard card={DECK[12]} size={1.0} delay={1.0}
+          style={{top:0, right:-75, transform:"rotate(13deg)", zIndex:4}} />
+        <FloatCard card={DECK[24]} size={.9}  delay={1.6}
+          style={{bottom:5, right:-60, transform:"rotate(-9deg)", zIndex:4}} />
       </motion.div>
 
       {/* ── Description + CTAs ── */}
