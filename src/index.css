@@ -567,6 +567,61 @@ footer p { font-size: .75rem; color: rgba(250,246,240,.3); letter-spacing: .08em
 .reveal-delay-3 { transition-delay: .3s; }
 .reveal-delay-4 { transition-delay: .4s; }
 
+/* ─── PRODUCT SHOWCASE ───────────────────────────────────── */
+.showcase-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  padding-top: 5rem;
+  padding-bottom: 4rem;
+}
+.showcase-fan { display: flex; justify-content: center; }
+.showcase-copy { }
+.showcase-list {
+  list-style: none;
+  display: flex; flex-direction: column; gap: .75rem;
+}
+.showcase-list li {
+  display: flex; align-items: center; gap: .75rem;
+  font-size: .92rem; color: var(--mid);
+}
+.sc-dot {
+  display: inline-block; width: 9px; height: 9px;
+  border-radius: 50%; flex-shrink: 0;
+}
+.flatlay-wrap { padding: 0 2rem 1rem; }
+.flatlay-bg {
+  position: relative;
+  height: 320px;
+  background: linear-gradient(135deg, #FDF0E8 0%, #FAE8D8 40%, #F5E0D0 100%);
+  border-radius: 24px;
+  overflow: hidden;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.flatlay-quote {
+  position: absolute;
+  bottom: 28px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(250,246,240,.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(212,168,92,.3);
+  border-radius: 16px;
+  padding: 14px 28px;
+  text-align: center;
+  white-space: nowrap;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  box-shadow: 0 8px 30px rgba(60,50,40,.08);
+}
+.flatlay-quote p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--dark);
+  margin: 0;
+}
+
 /* ─── HERO SPLIT LAYOUT ──────────────────────────────────── */
 .hero-split {
   display: grid;
@@ -615,6 +670,8 @@ footer p { font-size: .75rem; color: rgba(250,246,240,.3); letter-spacing: .08em
   .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
   .bg-card-2, .bg-card-3 { display: none; }
   .how-visual { min-height: 280px; }
+  .showcase-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .flatlay-bg { height: 260px; }
   .hero-split { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
   .hero-left { align-items: center; }
   .hero-left .hero-pre { justify-content: center; }

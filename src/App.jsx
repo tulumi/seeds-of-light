@@ -1021,6 +1021,148 @@ function Hero() {
   );
 }
 
+// ── PRODUCT SHOWCASE ─────────────────────────────────────────
+function CardFan({ cards, rotate = [-20, 0, 20], cls = ["mc-blush","mc-gold","mc-sage"] }) {
+  return (
+    <div style={{position:"relative",width:280,height:320,flexShrink:0}}>
+      {/* Soft glow beneath cards */}
+      <div style={{position:"absolute",bottom:0,left:"50%",transform:"translateX(-50%)",width:200,height:40,background:"radial-gradient(ellipse,rgba(212,168,92,.18) 0%,transparent 70%)",filter:"blur(10px)"}}/>
+      {cards.map((card, i) => {
+        const angle = rotate[i] ?? 0;
+        const bgCls = cls[i] ?? "mc-blush";
+        const bgMap = {"mc-blush":"linear-gradient(160deg,#FFF5F2,#FFE8E0)","mc-gold":"linear-gradient(160deg,#FFFBF0,#FFF3D0)","mc-sage":"linear-gradient(160deg,#F2F8F2,#E0EEE0)","mc-sky":"linear-gradient(160deg,#F0F6FF,#DFF0FF)","mc-lav":"linear-gradient(160deg,#F5F0FF,#EAE0FF)"};
+        const badge = BADGE_COLORS[card.n % BADGE_COLORS.length];
+        return (
+          <div key={card.id} style={{
+            position:"absolute",bottom:0,left:"50%",
+            width:160,height:220,
+            background:bgMap[bgCls]||bgMap["mc-blush"],
+            borderRadius:18,
+            border:"1px solid rgba(255,255,255,.8)",
+            boxShadow:"0 12px 40px rgba(60,50,40,.14)",
+            transform:`translateX(-50%) rotate(${angle}deg)`,
+            transformOrigin:"center bottom",
+            display:"flex",flexDirection:"column",alignItems:"center",padding:"16px 12px 14px",gap:8,
+            zIndex: i === 1 ? 2 : 1,
+          }}>
+            <span style={{background:badge.bg,color:badge.text,fontSize:8,fontWeight:700,padding:"3px 10px",borderRadius:99,letterSpacing:"0.04em",textAlign:"center"}}>{card.badge}</span>
+            <div style={{flex:1,width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <img src={card.img} alt="" style={{width:"80%",height:"auto",objectFit:"contain"}}/>
+            </div>
+            <p style={{fontFamily:"var(--font-serif)",fontStyle:"italic",fontSize:"0.75rem",color:"#3C3228",textAlign:"center",lineHeight:1.35,margin:0}}>
+              {card.lines.join(" ")}
+            </p>
+            <div style={{fontSize:"0.32rem",color:"var(--gold)",letterSpacing:"0.1em"}}>✦ ✦ ✦</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function FlatLayCard({ card, style }) {
+  const badge = BADGE_COLORS[card.n % BADGE_COLORS.length];
+  return (
+    <div style={{
+      position:"absolute",
+      width:130,height:178,
+      background:"white",
+      borderRadius:14,
+      boxShadow:"0 6px 24px rgba(60,50,40,.13)",
+      display:"flex",flexDirection:"column",alignItems:"center",padding:"12px 10px 10px",gap:6,
+      ...style,
+    }}>
+      <span style={{background:badge.bg,color:badge.text,fontSize:7.5,fontWeight:700,padding:"3px 8px",borderRadius:99,letterSpacing:"0.04em",textAlign:"center",whiteSpace:"nowrap"}}>{card.badge}</span>
+      <div style={{flex:1,width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <img src={card.img} alt="" style={{width:"85%",height:"auto",objectFit:"contain"}}/>
+      </div>
+      <p style={{fontFamily:"var(--font-serif)",fontStyle:"italic",fontSize:"0.62rem",color:"#3C3228",textAlign:"center",lineHeight:1.3,margin:0}}>
+        {card.lines.join(" ")}
+      </p>
+    </div>
+  );
+}
+
+function ProductShowcaseSection() {
+  const fanCards  = [DECK[14], DECK[0], DECK[25]];
+  const layCards  = [
+    { card: DECK[5],  style:{ top:30,  left:"5%",  rotate:"-12deg", scale:"0.88" }},
+    { card: DECK[11], style:{ top:20,  left:"22%", rotate:"4deg",   scale:"1"    }},
+    { card: DECK[2],  style:{ top:60,  left:"40%", rotate:"-6deg",  scale:"1.05" }},
+    { card: DECK[18], style:{ top:15,  left:"57%", rotate:"9deg",   scale:"0.93" }},
+    { card: DECK[30], style:{ top:40,  left:"73%", rotate:"-3deg",  scale:"0.97" }},
+    { card: DECK[37], style:{ top:25,  right:"1%", rotate:"7deg",   scale:"0.9"  }},
+  ];
+
+  return (
+    <section id="showcase" style={{background:"var(--cream)",padding:"0 0 5rem"}}>
+
+      {/* ── ROW 1: Fan + copy ── */}
+      <div className="showcase-grid section-inner">
+        <motion.div className="showcase-fan reveal"
+          initial={{opacity:0,y:40}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.8}}>
+          <div style={{position:"relative",display:"inline-block"}}>
+            <CardFan cards={fanCards} rotate={[-22,0,22]} cls={["mc-blush","mc-gold","mc-sage"]}/>
+            {/* decorative hand-holding hint */}
+            <div style={{position:"absolute",bottom:-20,left:"50%",transform:"translateX(-50%)",width:120,height:30,background:"linear-gradient(to top,rgba(212,168,92,.12),transparent)",borderRadius:"50%",filter:"blur(6px)"}}/>
+          </div>
+        </motion.div>
+
+        <motion.div className="showcase-copy reveal reveal-delay-2"
+          initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.8,delay:.2}}>
+          <div className="section-tag"><span className="star star-sm"/>El producto en sus manos</div>
+          <h2 style={{marginBottom:"1.2rem"}}>Cartas que tus hijos pueden <em style={{color:"var(--blush-deep)"}}>tocar, leer y sentir</em></h2>
+          <p style={{color:"var(--mid)",marginBottom:"1.4rem"}}>Cada carta es un objeto de calidad premium — cartulina gruesa de 350g, esquinas redondeadas, colores suaves. Diseñadas para durar años en la vida de tu familia.</p>
+          <ul className="showcase-list">
+            <li><span className="sc-dot" style={{background:"#F090A0"}}/>350g de cartulina mate premium</li>
+            <li><span className="sc-dot" style={{background:"#A8BFA8"}}/>Esquinas redondeadas, seguras para niños</li>
+            <li><span className="sc-dot" style={{background:"#D4A85C"}}/>Colores suaves, tipografía legible</li>
+            <li><span className="sc-dot" style={{background:"#C4B8D8"}}/>También disponible en PDF imprimible</li>
+            <li><span className="sc-dot" style={{background:"#60B8E0"}}/>40 cartas: 32 afirmaciones + 8 mindfulness</li>
+          </ul>
+        </motion.div>
+      </div>
+
+      {/* ── ROW 2: Flat-lay ── */}
+      <motion.div className="flatlay-wrap reveal"
+        initial={{opacity:0,y:50}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.9,delay:.1}}>
+        <div className="flatlay-bg">
+          {/* Decorative pencils SVG */}
+          <svg className="flatlay-deco" viewBox="0 0 80 200" style={{position:"absolute",left:0,top:0,width:50,opacity:.5}}>
+            {[["#F4D060","#E0A020"],["#88CCA0","#50A870"],["#90C8E8","#50A0D0"]].map(([c1,c2],i)=>(
+              <g key={i} transform={`translate(${10+i*22},${10+i*18}) rotate(${-10+i*8})`}>
+                <rect x="-5" y="0" width="10" height="70" rx="3" fill={c1}/>
+                <polygon points="0,-10 -5,0 5,0" fill={c2}/>
+                <rect x="-5" y="70" width="10" height="12" rx="2" fill="#F0E0D0"/>
+              </g>
+            ))}
+          </svg>
+
+          {/* Scattered cards */}
+          {layCards.map(({card,style},i)=>(
+            <FlatLayCard key={card.id} card={card} style={{
+              transform:`rotate(${style.rotate}) scale(${style.scale})`,
+              top:style.top, left:style.left, right:style.right,
+            }}/>
+          ))}
+
+          {/* Quote overlay */}
+          <div className="flatlay-quote">
+            <span className="star star-md"/>
+            <p>"Las cartas se convirtieron en nuestro ritual favorito de la tarde."</p>
+            <span style={{fontSize:".7rem",color:"var(--soft)",letterSpacing:".08em"}}>— Valentina, mamá de Emilio, 5 años</span>
+          </div>
+
+          {/* Decorative stars */}
+          {[[90,"12%"],[82,"78%"],[95,"45%"]].map(([t,l],i)=>(
+            <span key={i} style={{position:"absolute",top:t,left:l,color:"var(--gold)",fontSize:i===2?"1rem":".7rem",opacity:.5}}>✦</span>
+          ))}
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
 // ── PROBLEM ───────────────────────────────────────────────────
 function ProblemSection() {
   return (
@@ -1602,6 +1744,7 @@ export default function App() {
       <Nav />
       <Hero />
       <CardStrip onSel={setSel} />
+      <ProductShowcaseSection />
       <ProblemSection />
       <SolutionSection />
       <GuiaSection />
