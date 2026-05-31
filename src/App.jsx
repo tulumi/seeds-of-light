@@ -1656,6 +1656,111 @@ function PricingSection() {
   );
 }
 
+// ── DESCARGA DIGITAL ─────────────────────────────────────────
+function DownloadSection() {
+  const files = [
+    {
+      label:"Cartas para imprimir",
+      desc:"40 cartas · A4 horizontal · 8 por página · Guías de corte incluidas",
+      file:"/seeds-of-light-cartas.pdf",
+      name:"seeds-of-light-cartas.pdf",
+      icon:(
+        <svg viewBox="0 0 32 32" fill="none" style={{width:32,height:32,flexShrink:0}}>
+          <rect x="4" y="2" width="18" height="24" rx="3" stroke="#D4A85C" strokeWidth="1.6"/>
+          <rect x="8" y="2" width="18" height="24" rx="3" fill="white" stroke="#D4A85C" strokeWidth="1.6"/>
+          <line x1="12" y1="10" x2="22" y2="10" stroke="#E8C8A0" strokeWidth="1.2" strokeLinecap="round"/>
+          <line x1="12" y1="14" x2="22" y2="14" stroke="#E8C8A0" strokeWidth="1.2" strokeLinecap="round"/>
+          <line x1="12" y1="18" x2="18" y2="18" stroke="#E8C8A0" strokeWidth="1.2" strokeLinecap="round"/>
+        </svg>
+      ),
+      color:"var(--blush)",
+      badge:"PDF · 432 KB",
+    },
+    {
+      label:"Libro guía completo",
+      desc:"42 páginas · Una página por carta · Preguntas + espacio de notas",
+      file:"/seeds-of-light-libro.pdf",
+      name:"seeds-of-light-libro.pdf",
+      icon:(
+        <svg viewBox="0 0 32 32" fill="none" style={{width:32,height:32,flexShrink:0}}>
+          <rect x="4" y="2" width="24" height="28" rx="3" fill="white" stroke="#A8BFA8" strokeWidth="1.6"/>
+          <rect x="4" y="2" width="6" height="28" rx="3" fill="#A8BFA8" opacity=".4"/>
+          <line x1="14" y1="10" x2="24" y2="10" stroke="#C8DCC8" strokeWidth="1.2" strokeLinecap="round"/>
+          <line x1="14" y1="14" x2="24" y2="14" stroke="#C8DCC8" strokeWidth="1.2" strokeLinecap="round"/>
+          <line x1="14" y1="18" x2="20" y2="18" stroke="#C8DCC8" strokeWidth="1.2" strokeLinecap="round"/>
+        </svg>
+      ),
+      color:"var(--sage-light)",
+      badge:"PDF · 477 KB",
+    },
+  ];
+
+  return (
+    <section id="descargas" style={{padding:"4rem 0",background:"var(--cream-deep)"}}>
+      <div className="section-inner" style={{maxWidth:680}}>
+        <div className="reveal" style={{textAlign:"center",marginBottom:"2.5rem"}}>
+          <span className="label">kit digital completo</span>
+          <h2 style={{marginTop:".4rem",marginBottom:".6rem"}}>Descarga tu kit ahora</h2>
+          <p style={{color:"var(--mid)",fontSize:".95rem"}}>Listo para imprimir en casa o en cualquier copistería.</p>
+        </div>
+
+        <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
+          {files.map((f,i) => (
+            <motion.a key={i} href={f.file} download={f.name}
+              className="reveal"
+              style={{
+                display:"flex",alignItems:"center",gap:"1.2rem",
+                background:"white",
+                borderRadius:20,
+                padding:"1.2rem 1.5rem",
+                textDecoration:"none",
+                border:"1.5px solid rgba(168,152,128,.15)",
+                boxShadow:"0 4px 20px rgba(60,50,40,.07)",
+                transition:"all .22s",
+              }}
+              whileHover={{y:-3,boxShadow:"0 12px 36px rgba(60,50,40,.13)"}}
+            >
+              {/* Icono */}
+              <div style={{width:56,height:56,borderRadius:14,background:f.color,
+                display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                {f.icon}
+              </div>
+
+              {/* Info */}
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{display:"flex",alignItems:"center",gap:".6rem",flexWrap:"wrap"}}>
+                  <span style={{fontFamily:"var(--font-serif)",fontSize:"1.05rem",color:"var(--dark)",fontWeight:400}}>{f.label}</span>
+                  <span style={{background:"var(--cream-deep)",color:"var(--soft)",fontSize:".65rem",
+                    padding:"2px 8px",borderRadius:20,letterSpacing:".06em",fontFamily:"var(--font-sans)",
+                    whiteSpace:"nowrap"}}>{f.badge}</span>
+                </div>
+                <p style={{fontSize:".82rem",color:"var(--mid)",margin:".25rem 0 0",lineHeight:1.5}}>{f.desc}</p>
+              </div>
+
+              {/* Botón descarga */}
+              <div style={{display:"flex",alignItems:"center",gap:".4rem",
+                background:"var(--dark)",color:"var(--cream)",
+                padding:".6rem 1.2rem",borderRadius:40,flexShrink:0,
+                fontSize:".78rem",fontFamily:"var(--font-sans)",letterSpacing:".06em",
+                whiteSpace:"nowrap"}}>
+                <svg viewBox="0 0 16 16" fill="none" style={{width:13,height:13}}>
+                  <path d="M8 2v8M5 7l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  <path d="M3 12h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+                Descargar
+              </div>
+            </motion.a>
+          ))}
+        </div>
+
+        <p style={{textAlign:"center",marginTop:"1.5rem",fontSize:".78rem",color:"var(--soft)"}}>
+          ✦ &nbsp;Archivos PDF listos para imprimir · No necesitas app especial&nbsp; ✦
+        </p>
+      </div>
+    </section>
+  );
+}
+
 // ── TESTIMONIALS ──────────────────────────────────────────────
 function TestimonialsSection() {
   const list = [
@@ -1816,6 +1921,7 @@ export default function App() {
       <AprenderSection />
       <HowSection />
       <PricingSection />
+      <DownloadSection />
       <TestimonialsSection />
       <ProductShowcaseSection />
       <FAQSection />
