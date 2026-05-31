@@ -888,8 +888,7 @@ function BoxFrontFace() {
 }
 
 function DeckBoxMockup() {
-  // 2.5D cabinet-projection box — no CSS 3D needed, works everywhere
-  const W=220, H=295, DX=58, DY=28; // front W×H, depth offset DX right, DY up
+  const W=290, H=385, DX=72, DY=34;
 
   return (
     <motion.div
@@ -947,19 +946,38 @@ function DeckBoxMockup() {
 }
 
 // ── FLOATING CARD (around box) ────────────────────────────────
-function FloatCard({ card, style, cls, delay=0 }) {
+const MC_BG = {
+  "mc-blush":"linear-gradient(150deg,#FFF5F2,#FFE8E0)",
+  "mc-gold": "linear-gradient(150deg,#FFFBF0,#FFF3D0)",
+  "mc-sage": "linear-gradient(150deg,#F2F8F2,#E0EEE0)",
+  "mc-sky":  "linear-gradient(150deg,#F0F6FF,#DFF0FF)",
+  "mc-lav":  "linear-gradient(150deg,#F5F0FF,#EAE0FF)",
+};
+
+function FloatCard({ card, style, cls="mc-blush", delay=0, size=1 }) {
+  const badge = BADGE_COLORS[card.n % BADGE_COLORS.length];
+  const W = Math.round(110*size), H = Math.round(165*size);
+  const br = Math.round(14*size);
   return (
     <motion.div
-      className={`mini-card ${cls}`}
-      style={{position:"absolute",...style}}
-      initial={{opacity:0,scale:0.8}}
-      animate={{opacity:1,scale:1,y:[0,-8,0]}}
-      transition={{opacity:{duration:.6,delay},scale:{duration:.6,delay},y:{duration:3.5+delay,repeat:Infinity,ease:"easeInOut",delay}}}
+      style={{
+        position:"absolute", width:W, height:H,
+        background: MC_BG[cls]||"white",
+        borderRadius: br,
+        border:"1px solid rgba(255,255,255,.9)",
+        boxShadow:`0 ${Math.round(10*size)}px ${Math.round(36*size)}px rgba(60,50,40,.14)`,
+        display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
+        gap:`${.3*size}rem`, padding:`${.9*size}rem ${.6*size}rem`,
+        ...style
+      }}
+      initial={{opacity:0,scale:.8}}
+      animate={{opacity:1,scale:1,y:[0,Math.round(-9*size),0]}}
+      transition={{opacity:{duration:.6,delay},scale:{duration:.6,delay},y:{duration:3.8+delay,repeat:Infinity,ease:"easeInOut",delay}}}
     >
-      <div className="card-label-mini">{card.badge}</div>
-      <div className="card-svg"><CardImg src={card.img} /></div>
-      <div className="card-text-mini">{card.lines.join(" ")}</div>
-      <div className="card-stars">✦ ✦ ✦</div>
+      <div style={{fontFamily:"var(--font-sans)",fontSize:`${.38*size}rem`,letterSpacing:".15em",textTransform:"uppercase",color:"var(--soft)",textAlign:"center",lineHeight:1.3}}>{card.badge}</div>
+      <div style={{width:`${60*size}px`,height:`${52*size}px`,display:"flex",alignItems:"center",justifyContent:"center"}}><CardImg src={card.img}/></div>
+      <div style={{fontFamily:"var(--font-serif)",fontStyle:"italic",fontSize:`${.52*size}rem`,textAlign:"center",color:"var(--dark)",lineHeight:1.3,padding:`0 ${.2*size}rem`}}>{card.lines.join(" ")}</div>
+      <div style={{fontSize:`${.3*size}rem`,color:"var(--gold)",letterSpacing:".1em"}}>✦ ✦ ✦</div>
     </motion.div>
   );
 }
@@ -971,52 +989,67 @@ function Hero() {
       <StarsBg />
       <div className="hero-ring" /><div className="hero-ring" /><div className="hero-ring" />
 
-      <div className="hero-split">
-        {/* LEFT: copy */}
-        <div className="hero-left">
-          <motion.div className="hero-pre" initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8}}>
-            <span className="star star-sm" />
-            <span>Para familias con niños de 3 a 7 años</span>
-            <span className="star star-sm" />
-          </motion.div>
+      {/* ── Eyebrow + Title ── */}
+      <motion.div className="hero-pre" initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{duration:.7}}>
+        <span className="star star-sm" />
+        <span>Para familias con niños de 3 a 7 años</span>
+        <span className="star star-sm" />
+      </motion.div>
 
-          <motion.h1 className="hero-title" initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.15}}>
-            Seeds of <em>Light</em>
-          </motion.h1>
+      <motion.h1 className="hero-title" initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.1}}>
+        Seeds of <em>Light</em>
+      </motion.h1>
 
-          <motion.p className="hero-subtitle-script" initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.25}}>
-            5 minutos que cambian cómo se siente tu hijo
-          </motion.p>
+      <motion.p className="hero-subtitle-script" initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.2}}>
+        5 minutos que cambian cómo se siente tu hijo
+      </motion.p>
 
-          <motion.p className="hero-desc" style={{margin:"0 0 2rem"}} initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.35}}>
-            Un ritual diario sencillo para que tu hijo crezca sintiéndose seguro, querido y capaz.
-            Sin métodos complejos — solo un momento especial entre tú y él, cada día.
-          </motion.p>
+      {/* ── PRODUCT SCENE — the visual anchor ── */}
+      <motion.div className="hero-product-scene"
+        initial={{opacity:0,y:40,scale:.95}} animate={{opacity:1,y:0,scale:1}}
+        transition={{duration:1,delay:.3,ease:[.16,1,.3,1]}}>
 
-          <motion.div className="hero-btns" style={{justifyContent:"flex-start"}} initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.45}}>
-            <a href="#pricing" className="btn-primary"><span className="star star-sm" />Comenzar nuestro ritual</a>
-            <a href="#guia" className="btn-secondary">Ver el libro guía →</a>
-          </motion.div>
+        {/* Warm ambient glow */}
+        <div className="hero-glow" />
 
-          <motion.div className="hero-trust" initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.6}}>
-            <span>⭐ 4.9 · Más de 1,200 familias</span>
-            <span className="trust-dot">·</span>
-            <span>Listo en minutos</span>
-            <span className="trust-dot">·</span>
-            <span>Garantía 30 días</span>
-          </motion.div>
+        {/* Floating cards — back layer */}
+        <FloatCard card={DECK[3]}  cls="mc-blush" size={1.45} delay={.8}
+          style={{top:-20, left:-50, transform:"rotate(-16deg)", zIndex:1}} />
+        <FloatCard card={DECK[30]} cls="mc-lav"   size={1.2}  delay={1.4}
+          style={{bottom:30, left:-20, transform:"rotate(10deg)", zIndex:1}} />
+
+        {/* Main box */}
+        <div style={{position:"relative",zIndex:3}}>
+          <DeckBoxMockup />
         </div>
 
-        {/* RIGHT: 3D box */}
-        <motion.div className="hero-right" initial={{opacity:0,x:40}} animate={{opacity:1,x:0}} transition={{duration:1,delay:.3}}>
-          <div style={{position:"relative",width:320,height:400,display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <DeckBoxMockup />
-            <FloatCard card={DECK[0]}  cls="mc-blush" delay={0.7} style={{width:88,height:132,top:20,left:-15,transform:"rotate(-8deg)",zIndex:2}} />
-            <FloatCard card={DECK[12]} cls="mc-sage"  delay={0.9} style={{width:82,height:124,bottom:30,left:-5,transform:"rotate(6deg)",zIndex:2}} />
-            <FloatCard card={DECK[33]} cls="mc-sky"   delay={1.1} style={{width:82,height:124,bottom:10,right:-10,transform:"rotate(-5deg)",zIndex:2}} />
-          </div>
-        </motion.div>
-      </div>
+        {/* Floating cards — front layer */}
+        <FloatCard card={DECK[5]}  cls="mc-sage" size={1.35} delay={1.0}
+          style={{top:10,  right:-55, transform:"rotate(14deg)",  zIndex:4}} />
+        <FloatCard card={DECK[33]} cls="mc-sky"  size={1.15} delay={1.6}
+          style={{bottom:15, right:-20, transform:"rotate(-8deg)", zIndex:4}} />
+      </motion.div>
+
+      {/* ── Description + CTAs ── */}
+      <motion.p className="hero-desc" initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.7}}>
+        Un ritual diario sencillo para que tu hijo crezca sintiéndose seguro, querido y capaz.
+        Sin métodos complejos — solo un momento especial entre tú y él, cada día.
+      </motion.p>
+
+      <motion.div className="hero-btns" initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{duration:.8,delay:.85}}>
+        <a href="#pricing" className="btn-primary btn-primary-lg">
+          <span className="star star-sm" />Comenzar nuestro ritual
+        </a>
+        <a href="#guia" className="btn-secondary">Ver el libro guía →</a>
+      </motion.div>
+
+      <motion.div className="hero-trust" initial={{opacity:0}} animate={{opacity:1}} transition={{duration:.8,delay:1.05}}>
+        <span>⭐ 4.9 · Más de 1,200 familias</span>
+        <span className="trust-dot">·</span>
+        <span>Listo en minutos</span>
+        <span className="trust-dot">·</span>
+        <span>Garantía 30 días</span>
+      </motion.div>
     </section>
   );
 }
